@@ -6,6 +6,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDateTime;
+
 @Entity(name = "user")
 @Getter
 @Setter
@@ -24,4 +26,7 @@ public class User {
     
     @Column
     private String student;
+    
+    @Column(name = "token_expiration")
+    private LocalDateTime tokenExpiration;
 }
