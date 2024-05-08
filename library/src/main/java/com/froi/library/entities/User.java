@@ -5,10 +5,12 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.Type;
 
 import java.time.LocalDateTime;
 
-@Entity(name = "user")
+@Entity
+@Table(name = "user", schema = "public")
 @Getter
 @Setter
 @NoArgsConstructor
