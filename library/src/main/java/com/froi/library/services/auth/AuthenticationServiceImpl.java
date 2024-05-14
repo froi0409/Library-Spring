@@ -32,7 +32,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     }
     
     @Override
-    public JwtResponseDTO autheenticateAndGetToken(AuthenticationRequestDTO authDTO) throws EntityNotFoundException {
+    public JwtResponseDTO authenticateAndGetToken(AuthenticationRequestDTO authDTO) throws EntityNotFoundException {
         User userToAuth = userRepository.findById(authDTO.getUsername())
                 .orElseThrow(() -> new EntityNotFoundException("USERAME_NOT_FOUND"));
         

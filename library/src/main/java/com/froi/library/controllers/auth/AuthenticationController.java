@@ -24,6 +24,6 @@ public class AuthenticationController {
     
     @PostMapping("/login")
     public ResponseEntity<JwtResponseDTO> authenticateAndGetToken(@RequestBody AuthenticationRequestDTO authDTO) throws EntityNotFoundException {
-        return ResponseEntity.ok(authenticationService.autheenticateAndGetToken(authDTO));
+        return ResponseEntity.ok(authenticationService.authenticateAndGetToken(authDTO));
     }
 }

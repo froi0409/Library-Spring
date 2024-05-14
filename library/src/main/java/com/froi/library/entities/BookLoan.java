@@ -8,7 +8,8 @@ import lombok.Setter;
 
 import java.util.Date;
 
-@Entity(name = "book_loan")
+@Entity
+@Table(name = "book_loan", schema = "public")
 @Getter
 @Setter
 @NoArgsConstructor

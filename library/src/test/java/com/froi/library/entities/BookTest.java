@@ -11,14 +11,14 @@ public class BookTest {
 
     private static final String CODE = "978-9706860699";
     private static final String TITLE = "Cálculo de una Variable";
-    public static final Date PUBLISH_DATE = Date.valueOf(LocalDate.of(2024, Month.MAY, 5));
+    public static final String PUBLISH_DATE = "2020/12/12";
     public static final String PUBLISHER = "CENGAGE Learning";
     public static final String AUTHOR = "James Stewart";
     public static final Double COST = 450.00;
     
     private static final String EXPECTED_CODE = "978-9706860699";
     private static final String EXPECTED_TITLE = "Cálculo de una Variable";
-    public static final Date EXPECTED_PUBLISH_DATE = Date.valueOf(LocalDate.of(2024, Month.MAY, 5));
+    public static final String EXPECTED_PUBLISH_DATE = "2020/12/12";
     public static final String EXPECTED_PUBLISHER = "CENGAGE Learning";
     public static final String EXPECTED_AUTHOR = "James Stewart";
     public static final Double EXPECTED_COST = 450.00;
