@@ -1,11 +1,16 @@
 package com.froi.library.services.user;
 
 import com.froi.library.dto.user.CreateUserRequestDTO;
+import com.froi.library.dto.user.StudentDTO;
+import com.froi.library.entities.Student;
 import com.froi.library.entities.User;
 import com.froi.library.enums.studentstatus.Role;
+import com.froi.library.enums.studentstatus.StudentStatus;
 import com.froi.library.exceptions.DuplicatedEntityException;
+import com.froi.library.exceptions.EntityNotFoundException;
 import com.froi.library.exceptions.EntitySyntaxException;
 import com.froi.library.repositories.UserRepository;
+import com.froi.library.services.student.StudentService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -14,6 +19,8 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -24,7 +31,7 @@ public class UserServiceImplTest {
 
     public static final String INVALID_USERNAME = "us";
     public static final String INVALID_PASSWORD = "xd";
-    public static final String NULL_STUDENT = null;
+    public static final StudentDTO NULL_STUDENT = null;
     public static final String EXPECTED_STUDENT_USERNAME = "201830121";
     public static final String EXPECTED_LIBRARIAN_USERNAME = "LIB_01";
     public static final String EXPECTED_PASSWORD = "admin123";
@@ -33,17 +40,26 @@ public class UserServiceImplTest {
     public static final Role STUDENT_ROLE = Role.STUDENT;
     public static final Role LIBRARIAN_ROLE = Role.LIBRARIAN;
     
+    private static final String STUDENT_ID = "201830121";
+    private static final String STUDENT_FIRST_NAME = "Fernando Rubén";
+    private static final String STUDENT_LAST_NAME = "Ocaña Ixcot";
+    private static final String DEGREE_ID = "1";
+    private static final String STUDENT_BIRTH_DATE = "2000/09/04";
+    private static final StudentStatus STUDENT_STATUS = StudentStatus.ACTIVE;
+    
     @Mock
-    UserRepository repository;
+    UserRepository userRepository;
     @Mock
     PasswordEncoder passwordEncoder;
+    @Mock
+    StudentService studentService;
     @InjectMocks
     UserServiceImpl serviceToTest;
     
     @Test
     void testInvalidUsername() {
         // Arrange
-        CreateUserRequestDTO newUser = new CreateUserRequestDTO(INVALID_USERNAME, EXPECTED_PASSWORD, EXPECTED_STUDENT);
+        CreateUserRequestDTO newUser = new CreateUserRequestDTO(INVALID_USERNAME, EXPECTED_PASSWORD, NULL_STUDENT);
         
         // Assert
         Assertions.assertThrows(EntitySyntaxException.class,
@@ -53,7 +69,7 @@ public class UserServiceImplTest {
     @Test
     void testInvalidPassword() {
         // Arrange
-        CreateUserRequestDTO newUser = new CreateUserRequestDTO(EXPECTED_STUDENT_USERNAME, INVALID_PASSWORD, EXPECTED_STUDENT);
+        CreateUserRequestDTO newUser = new CreateUserRequestDTO(EXPECTED_STUDENT_USERNAME, INVALID_PASSWORD, NULL_STUDENT);
         
         // Assert
         Assertions.assertThrows(EntitySyntaxException.class,
@@ -63,8 +79,8 @@ public class UserServiceImplTest {
     @Test
     void testDuplicatedUser() {
         // Arrange
-        CreateUserRequestDTO newUser = new CreateUserRequestDTO(EXPECTED_STUDENT_USERNAME, EXPECTED_PASSWORD, EXPECTED_STUDENT);
-        when(repository.findById(newUser.getUsername()))
+        CreateUserRequestDTO newUser = new CreateUserRequestDTO(EXPECTED_STUDENT_USERNAME, EXPECTED_PASSWORD, NULL_STUDENT);
+        when(userRepository.findById(newUser.getUsername()))
                 .thenReturn(Optional.of(new User()));
         
         // Assert
@@ -74,13 +90,16 @@ public class UserServiceImplTest {
     }
     
     @Test
-    void testValidStudent() throws DuplicatedEntityException, EntitySyntaxException {
+    void testValidStudent() throws DuplicatedEntityException, EntitySyntaxException, EntityNotFoundException {
         // Arrange
-        CreateUserRequestDTO newUser = new CreateUserRequestDTO(EXPECTED_STUDENT_USERNAME, EXPECTED_PASSWORD, EXPECTED_STUDENT);
-        when(repository.findById((newUser.getUsername())))
+        StudentDTO student = new StudentDTO(STUDENT_ID, STUDENT_FIRST_NAME, STUDENT_LAST_NAME, DEGREE_ID, STUDENT_BIRTH_DATE, STUDENT_STATUS.name());
+        CreateUserRequestDTO newUser = new CreateUserRequestDTO(EXPECTED_STUDENT_USERNAME, EXPECTED_PASSWORD, student);
+        when(userRepository.findById((newUser.getUsername())))
                 .thenReturn(Optional.empty());
         when(passwordEncoder.encode(EXPECTED_PASSWORD))
                 .thenReturn(EXPECTED_ENCRYPTED_PASSWORD);
+        when(studentService.getStudentById(newUser.getStudent().getId()))
+                .thenReturn(Optional.of(new Student()));
         
         // Act
         User createdUser = serviceToTest.createUser(newUser);
@@ -92,10 +111,33 @@ public class UserServiceImplTest {
     }
     
     @Test
-    void testValidLibrarian() throws DuplicatedEntityException, EntitySyntaxException {
+    void testDuplicatedStudent() throws EntityNotFoundException {
+        // Arrange
+        StudentDTO student = new StudentDTO(STUDENT_ID, STUDENT_FIRST_NAME, STUDENT_LAST_NAME, DEGREE_ID, STUDENT_BIRTH_DATE, STUDENT_STATUS.name());
+        Student studentEntity = new Student();
+        studentEntity.setId(STUDENT_ID);
+        CreateUserRequestDTO newUser = new CreateUserRequestDTO(EXPECTED_STUDENT_USERNAME, EXPECTED_PASSWORD, student);
+        List<User> mockUsers = new ArrayList<>();
+        mockUsers.add(new User());
+        when(userRepository.findById((newUser.getUsername())))
+                .thenReturn(Optional.empty());
+        when(passwordEncoder.encode(EXPECTED_PASSWORD))
+                .thenReturn(EXPECTED_ENCRYPTED_PASSWORD);
+        when(studentService.getStudentById(STUDENT_ID))
+                .thenReturn(Optional.of(studentEntity));
+        when(userRepository.findUsersByStudent_Id(STUDENT_ID))
+                .thenReturn(mockUsers);
+    
+        // Act & Assert
+        assertThrows(DuplicatedEntityException.class,
+                () -> serviceToTest.createUser(newUser));
+    }
+    
+    @Test
+    void testValidLibrarian() throws DuplicatedEntityException, EntitySyntaxException, EntityNotFoundException {
         // Arrange
         CreateUserRequestDTO newUser = new CreateUserRequestDTO(EXPECTED_LIBRARIAN_USERNAME, EXPECTED_PASSWORD, NULL_STUDENT);
-        when(repository.findById((newUser.getUsername())))
+        when(userRepository.findById((newUser.getUsername())))
                 .thenReturn(Optional.empty());
         when(passwordEncoder.encode(EXPECTED_PASSWORD))
                 .thenReturn(EXPECTED_ENCRYPTED_PASSWORD);

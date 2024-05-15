@@ -27,8 +27,9 @@ public class User {
     @Enumerated(EnumType.STRING)
     private Role role;
     
-    @Column
-    private String student;
+    @ManyToOne(targetEntity = Student.class, optional = true)
+    @JoinColumn(name = "student")
+    private Student student;
     
     @Column(name = "token_expiration")
     private LocalDateTime tokenExpiration;

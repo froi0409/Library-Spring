@@ -28,7 +28,7 @@ public class Student {
     private Integer degree;
     
     @Column(name = "birt_date")
-    private Date birtDate;
+    private String birtDate;
     
     @Column
     @Enumerated(EnumType.STRING)

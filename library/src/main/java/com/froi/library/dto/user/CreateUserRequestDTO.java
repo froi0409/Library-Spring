@@ -1,5 +1,6 @@
 package com.froi.library.dto.user;
 
+import com.froi.library.entities.Student;
 import com.froi.library.enums.studentstatus.Role;
 import lombok.Value;
 
@@ -7,5 +8,5 @@ import lombok.Value;
 public class CreateUserRequestDTO {
     String username;
     String password;
-    String student;
+    StudentDTO student;
 }

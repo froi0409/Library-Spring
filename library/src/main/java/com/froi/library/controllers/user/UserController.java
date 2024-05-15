@@ -2,6 +2,7 @@ package com.froi.library.controllers.user;
 
 import com.froi.library.dto.user.CreateUserRequestDTO;
 import com.froi.library.exceptions.DuplicatedEntityException;
+import com.froi.library.exceptions.EntityNotFoundException;
 import com.froi.library.exceptions.EntitySyntaxException;
 import com.froi.library.services.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +25,7 @@ public class UserController {
     }
     
     @PostMapping
-    public ResponseEntity<Void> createUser(@RequestBody CreateUserRequestDTO newUser) throws DuplicatedEntityException, EntitySyntaxException {
+    public ResponseEntity<Void> createUser(@RequestBody CreateUserRequestDTO newUser) throws DuplicatedEntityException, EntitySyntaxException, EntityNotFoundException {
         userService.createUser(newUser);
         
         return ResponseEntity

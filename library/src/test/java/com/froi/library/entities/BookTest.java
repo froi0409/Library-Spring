@@ -11,18 +11,19 @@ public class BookTest {
 
     private static final String CODE = "978-9706860699";
     private static final String TITLE = "Cálculo de una Variable";
-    public static final String PUBLISH_DATE = "2020/12/12";
-    public static final String PUBLISHER = "CENGAGE Learning";
-    public static final String AUTHOR = "James Stewart";
-    public static final Double COST = 450.00;
+    private static final String PUBLISH_DATE = "2020/12/12";
+    private static final String PUBLISHER = "CENGAGE Learning";
+    private static final String AUTHOR = "James Stewart";
+    private static final Double COST = 450.00;
+    private static final Integer STOCK = 12;
     
     private static final String EXPECTED_CODE = "978-9706860699";
     private static final String EXPECTED_TITLE = "Cálculo de una Variable";
-    public static final String EXPECTED_PUBLISH_DATE = "2020/12/12";
-    public static final String EXPECTED_PUBLISHER = "CENGAGE Learning";
-    public static final String EXPECTED_AUTHOR = "James Stewart";
-    public static final Double EXPECTED_COST = 450.00;
-    
+    private static final String EXPECTED_PUBLISH_DATE = "2020/12/12";
+    private static final String EXPECTED_PUBLISHER = "CENGAGE Learning";
+    private static final String EXPECTED_AUTHOR = "James Stewart";
+    private static final Double EXPECTED_COST = 450.00;
+    private static final Integer EXPECTED_STOCK = 12;
     
     @Test
     void testBook() {
@@ -36,6 +37,7 @@ public class BookTest {
         book.setPublisher(PUBLISHER);
         book.setAuthor(AUTHOR);
         book.setCost(COST);
+        book.setStock(STOCK);
         
         // Assert
         assertEquals(EXPECTED_CODE, book.getCode());
@@ -44,6 +46,7 @@ public class BookTest {
         assertEquals(EXPECTED_PUBLISHER, book.getPublisher());
         assertEquals(EXPECTED_AUTHOR, book.getAuthor());
         assertEquals(EXPECTED_COST, book.getCost());
+        assertEquals(EXPECTED_STOCK, book.getStock());
         
     }
 

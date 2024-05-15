@@ -28,6 +28,11 @@ public class ToolsServiceTest {
     private static final String INVALID_MONEY_STRING = "12.345";
     private static final String INVALID_MONEY_NEGATIVE = "-12.25";
     private static final String INVALID_MONEY_NUMBER_FORMAT = "12A.21";
+    private static final String VALID_STRING = "Hello World";
+    private static final String INVALID_NUMBER_STRING = "Hello123";
+    private static final String INVALID_SPECIAL_CHAR_STRING = "Hello!";
+    private static final String NULL_STRING = null;
+    private static final String EMPTY_STRING = "";
     
     @InjectMocks
     private ToolsServiceImpl serviceToTest;
@@ -141,5 +146,66 @@ public class ToolsServiceTest {
         assertFalse(isInvalid);
         assertFalse(isInvalidFormat);
     }
+    
+    @Test
+    void testIsAlphabetic_ValidString_ReturnsTrue() {
+        // Arrange
+        String validString = VALID_STRING;
+        
+        // Act
+        boolean result = serviceToTest.isAlphabetic(validString);
+        
+        // Assert
+        assertTrue(result);
+    }
+    
+    @Test
+    void testIsAlphabetic_InvalidStringWithNumber_ReturnsFalse() {
+        // Arrange
+        String invalidString = INVALID_NUMBER_STRING;
+        
+        // Act
+        boolean result = serviceToTest.isAlphabetic(invalidString);
+        
+        // Assert
+        assertFalse(result);
+    }
+    
+    @Test
+    void testIsAlphabetic_InvalidStringWithSpecialCharacter_ReturnsFalse() {
+        // Arrange
+        String invalidString = INVALID_SPECIAL_CHAR_STRING;
+        
+        // Act
+        boolean result = serviceToTest.isAlphabetic(invalidString);
+        
+        // Assert
+        assertFalse(result);
+    }
+    
+    @Test
+    void testIsAlphabetic_NullString_ReturnsFalse() {
+        // Arrange
+        String nullString = NULL_STRING;
+        
+        // Act
+        boolean result = serviceToTest.isAlphabetic(nullString);
+        
+        // Assert
+        assertFalse(result);
+    }
+    
+    @Test
+    void testIsAlphabetic_EmptyString_ReturnsTrue() {
+        // Arrange
+        String emptyString = EMPTY_STRING;
+        
+        // Act
+        boolean result = serviceToTest.isAlphabetic(emptyString);
+        
+        // Assert
+        assertFalse(result);
+    }
+    
     
 }

@@ -5,6 +5,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.froi.library.controllers.AbstractMvcTest;
 import com.froi.library.controllers.exceptionhandler.GlobalExceptionHandler;
 import com.froi.library.dto.user.CreateUserRequestDTO;
+import com.froi.library.dto.user.StudentDTO;
+import com.froi.library.entities.Student;
 import com.froi.library.enums.studentstatus.Role;
 import com.froi.library.services.user.UserService;
 import org.junit.jupiter.api.Test;
@@ -22,7 +24,7 @@ public class UserControllerTest extends AbstractMvcTest {
     
     public static final String INVALID_USERNAME = "us";
     public static final String INVALID_PASSWORD = "xd";
-    public static final String NULL_STUDENT = null;
+    public static final StudentDTO NULL_STUDENT = null;
     public static final String EXPECTED_STUDENT_USERNAME = "201830121";
     public static final String EXPECTED_LIBRARIAN_USERNAME = "LIB_01";
     public static final String EXPECTED_PASSWORD = "admin123";
@@ -39,7 +41,7 @@ public class UserControllerTest extends AbstractMvcTest {
     public void testCreateUser() throws Exception {
         // Arrange
         ObjectMapper objectMapper = new ObjectMapper();
-        CreateUserRequestDTO newUser = new CreateUserRequestDTO(EXPECTED_STUDENT_USERNAME, EXPECTED_PASSWORD, EXPECTED_STUDENT);
+        CreateUserRequestDTO newUser = new CreateUserRequestDTO(EXPECTED_STUDENT_USERNAME, EXPECTED_PASSWORD, NULL_STUDENT);
         
         // Act & Assert
         mockMvc.perform(post("/v1/user")

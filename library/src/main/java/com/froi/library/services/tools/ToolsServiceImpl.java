@@ -89,4 +89,13 @@ public class ToolsServiceImpl implements ToolsService{
         }
     }
     
+    @Override
+    public boolean isAlphabetic(String str) {
+        if (str == null || str.isBlank()) {
+            return false;
+        }
+        return str.matches("[a-zA-ZáéíóúÁÉÍÓÚüÜñÑ\\s]+");
+    }
+    
+    
 }

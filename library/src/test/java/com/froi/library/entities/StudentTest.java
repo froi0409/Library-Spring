@@ -14,14 +14,14 @@ public class StudentTest {
     private static final String FIRST_NAME = "Fernando";
     private static final String LAST_NAME = "Ocaña";
     private static final Integer DEGREE = 1;
-    private static final Date BIRTH_DATE = Date.valueOf(LocalDate.of(2000, Month.MAY, 5));
+    private static final String BIRTH_DATE = "2000/04/04";
     private static final StudentStatus STATUS = StudentStatus.ACTIVE;
     
     private static final String EXPECTED_ID = "201830121";
     private static final String EXPECTED_FIRST_NAME = "Fernando";
     private static final String EXPECTED_LAST_NAME = "Ocaña";
     private static final Integer EXPECTED_DEGREE = 1;
-    private static final Date EXPECTED_BIRTH_DATE = Date.valueOf(LocalDate.of(2000, Month.MAY, 5));
+    private static final String EXPECTED_BIRTH_DATE = "2000/04/04";
     private static final StudentStatus EXPECTED_STATUS = StudentStatus.ACTIVE;
     
     @Test

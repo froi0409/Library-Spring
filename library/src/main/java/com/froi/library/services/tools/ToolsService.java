@@ -10,4 +10,6 @@ public interface ToolsService {
     boolean isMoney(String numberString);
     
     boolean isPositiveInteger(String numberString);
+    
+    boolean isAlphabetic(String str);
 }
