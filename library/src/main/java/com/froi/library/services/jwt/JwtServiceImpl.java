@@ -5,6 +5,7 @@ import com.froi.library.enums.studentstatus.Role;
 import com.froi.library.repositories.UserRepository;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.Jwt;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
@@ -12,7 +13,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.crypto.SecretKey;
+import java.security.Key;
 import java.time.LocalDateTime;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
 import java.util.Optional;
@@ -49,8 +52,15 @@ public class JwtServiceImpl implements JwtService {
     }
     
     @Override
+    public String getPayload(String token) {
+        Claims claims = extractClaims(token);
+        return claims.toString();
+    }
+    
+    @Override
     public boolean isValid(String token) {
         Claims claims = extractClaims(token);
+        System.out.println("ROLE - " + claims.get("role"));
         Date expirationDate = claims.getExpiration();
         return new Date().before(expirationDate);
     }
@@ -92,5 +102,7 @@ public class JwtServiceImpl implements JwtService {
             return e.getClaims();
         }
     }
+    
+    
     
 }

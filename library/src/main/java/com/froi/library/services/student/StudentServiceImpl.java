@@ -49,7 +49,7 @@ public class StudentServiceImpl implements StudentService {
         studentEntity.setId(student.getId());
         studentEntity.setFirstName(student.getFirstName());
         studentEntity.setLastName(student.getLastName());
-        studentEntity.setBirtDate(student.getBirthDate());
+        studentEntity.setBirthDate(student.getBirthDate());
         studentEntity.setDegree(Integer.valueOf(student.getDegree()));
         studentEntity.setStatus(StudentStatus.ACTIVE);
         

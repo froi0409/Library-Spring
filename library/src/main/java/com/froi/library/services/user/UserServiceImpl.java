@@ -53,7 +53,7 @@ public class UserServiceImpl implements UserService{
         userEntity.setUsername(newUser.getUsername());
         userEntity.setPassword(passwordEncoder.encode(newUser.getPassword()));
         if (newUser.getStudent() != null) {
-            Student checkStudent = studentService.getStudentById(newUser.getStudent().getId())
+            Student checkStudent = studentService.getStudentById(newUser.getStudent())
                     .orElseThrow(() -> new EntityNotFoundException("STUDENT_NOT_FOUND"));
             List<User> checkDuplicatedStudent = userRepository.findUsersByStudent_Id(checkStudent.getId());
             if (!checkDuplicatedStudent.isEmpty()) {

@@ -24,7 +24,7 @@ public class UserControllerTest extends AbstractMvcTest {
     
     public static final String INVALID_USERNAME = "us";
     public static final String INVALID_PASSWORD = "xd";
-    public static final StudentDTO NULL_STUDENT = null;
+    public static final String NULL_STUDENT = null;
     public static final String EXPECTED_STUDENT_USERNAME = "201830121";
     public static final String EXPECTED_LIBRARIAN_USERNAME = "LIB_01";
     public static final String EXPECTED_PASSWORD = "admin123";

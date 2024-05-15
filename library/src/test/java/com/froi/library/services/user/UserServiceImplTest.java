@@ -31,7 +31,7 @@ public class UserServiceImplTest {
 
     public static final String INVALID_USERNAME = "us";
     public static final String INVALID_PASSWORD = "xd";
-    public static final StudentDTO NULL_STUDENT = null;
+    public static final String NULL_STUDENT = null;
     public static final String EXPECTED_STUDENT_USERNAME = "201830121";
     public static final String EXPECTED_LIBRARIAN_USERNAME = "LIB_01";
     public static final String EXPECTED_PASSWORD = "admin123";
@@ -93,12 +93,12 @@ public class UserServiceImplTest {
     void testValidStudent() throws DuplicatedEntityException, EntitySyntaxException, EntityNotFoundException {
         // Arrange
         StudentDTO student = new StudentDTO(STUDENT_ID, STUDENT_FIRST_NAME, STUDENT_LAST_NAME, DEGREE_ID, STUDENT_BIRTH_DATE, STUDENT_STATUS.name());
-        CreateUserRequestDTO newUser = new CreateUserRequestDTO(EXPECTED_STUDENT_USERNAME, EXPECTED_PASSWORD, student);
+        CreateUserRequestDTO newUser = new CreateUserRequestDTO(EXPECTED_STUDENT_USERNAME, EXPECTED_PASSWORD, STUDENT_ID);
         when(userRepository.findById((newUser.getUsername())))
                 .thenReturn(Optional.empty());
         when(passwordEncoder.encode(EXPECTED_PASSWORD))
                 .thenReturn(EXPECTED_ENCRYPTED_PASSWORD);
-        when(studentService.getStudentById(newUser.getStudent().getId()))
+        when(studentService.getStudentById(newUser.getStudent()))
                 .thenReturn(Optional.of(new Student()));
         
         // Act
@@ -116,7 +116,7 @@ public class UserServiceImplTest {
         StudentDTO student = new StudentDTO(STUDENT_ID, STUDENT_FIRST_NAME, STUDENT_LAST_NAME, DEGREE_ID, STUDENT_BIRTH_DATE, STUDENT_STATUS.name());
         Student studentEntity = new Student();
         studentEntity.setId(STUDENT_ID);
-        CreateUserRequestDTO newUser = new CreateUserRequestDTO(EXPECTED_STUDENT_USERNAME, EXPECTED_PASSWORD, student);
+        CreateUserRequestDTO newUser = new CreateUserRequestDTO(EXPECTED_STUDENT_USERNAME, EXPECTED_PASSWORD, STUDENT_ID);
         List<User> mockUsers = new ArrayList<>();
         mockUsers.add(new User());
         when(userRepository.findById((newUser.getUsername())))

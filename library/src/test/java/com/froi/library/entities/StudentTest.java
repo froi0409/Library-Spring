@@ -34,7 +34,7 @@ public class StudentTest {
         student.setFirstName(FIRST_NAME);
         student.setLastName(LAST_NAME);
         student.setDegree(DEGREE);
-        student.setBirtDate(BIRTH_DATE);
+        student.setBirthDate(BIRTH_DATE);
         student.setStatus(STATUS);
         
         // Assert
@@ -42,7 +42,7 @@ public class StudentTest {
         assertEquals(EXPECTED_FIRST_NAME, student.getFirstName());
         assertEquals(EXPECTED_LAST_NAME, student.getLastName());
         assertEquals(EXPECTED_DEGREE, student.getDegree());
-        assertEquals(EXPECTED_BIRTH_DATE, student.getBirtDate());
+        assertEquals(EXPECTED_BIRTH_DATE, student.getBirthDate());
         assertEquals(EXPECTED_STATUS, student.getStatus());
     }
 }

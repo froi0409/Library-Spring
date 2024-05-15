@@ -38,7 +38,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         
         UsernamePasswordAuthenticationToken authData
                 = new UsernamePasswordAuthenticationToken(authDTO.getUsername(), authDTO.getPassword());
-        
+        System.out.println(authData);
         try {
             Authentication authentication = authenticationManager.authenticate(authData);
             if (authentication.isAuthenticated()) {

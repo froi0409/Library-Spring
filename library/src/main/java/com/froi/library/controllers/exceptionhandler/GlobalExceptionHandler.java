@@ -1,5 +1,6 @@
 package com.froi.library.controllers.exceptionhandler;
 
+import com.froi.library.exceptions.DenegatedActionException;
 import com.froi.library.exceptions.DuplicatedEntityException;
 import com.froi.library.exceptions.EntityNotFoundException;
 import com.froi.library.exceptions.EntitySyntaxException;
@@ -26,4 +27,8 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
     }
     
+    @ExceptionHandler(DenegatedActionException.class)
+    public ResponseEntity<String> handleDenegatedActionException(DenegatedActionException ex) {
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(ex.getMessage());
+    }
 }

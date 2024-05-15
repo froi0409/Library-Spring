@@ -8,5 +8,5 @@ import lombok.Value;
 public class CreateUserRequestDTO {
     String username;
     String password;
-    StudentDTO student;
+    String student;
 }

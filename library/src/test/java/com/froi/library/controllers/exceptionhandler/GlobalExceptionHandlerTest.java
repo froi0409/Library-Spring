@@ -1,8 +1,10 @@
 package com.froi.library.controllers.exceptionhandler;
 
+import com.froi.library.exceptions.DenegatedActionException;
 import com.froi.library.exceptions.DuplicatedEntityException;
 import com.froi.library.exceptions.EntityNotFoundException;
 import com.froi.library.exceptions.EntitySyntaxException;
+import org.apache.coyote.Response;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
@@ -54,5 +56,17 @@ public class GlobalExceptionHandlerTest {
         
         // Assert
         assertEquals(HttpStatus.BAD_REQUEST, responseEntity.getStatusCode());
+    }
+    
+    @Test
+    void testDenegatedActionException() {
+        // Arrange
+        DenegatedActionException ex = mock(DenegatedActionException.class);
+        
+        // Act
+        ResponseEntity<String> responseentity = globalExceptionHandler.handleDenegatedActionException(ex);
+        
+        // Assert
+        assertEquals(HttpStatus.FORBIDDEN, responseentity.getStatusCode());
     }
 }

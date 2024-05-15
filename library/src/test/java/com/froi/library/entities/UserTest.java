@@ -39,7 +39,7 @@ public class UserTest {
         student.setFirstName(STUDENT_FIRST_NAME);
         student.setLastName(STUDENT_LAST_NAME);
         student.setDegree(Integer.valueOf(DEGREE_ID));
-        student.setBirtDate(STUDENT_BIRTH_DATE);
+        student.setBirthDate(STUDENT_BIRTH_DATE);
         student.setStatus(STUDENT_STATUS);
         
         
