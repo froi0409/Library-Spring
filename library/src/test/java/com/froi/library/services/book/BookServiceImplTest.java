@@ -27,7 +27,7 @@ public class BookServiceImplTest {
     private static final String AUTHOR = "James Stewart";
     private static final String PUBLISHER = "CENGAGE LEARNING";
     private static final String COST = "125.25";
-    private static final String PUBLISH_DATE = "2000/12/12";
+    private static final String PUBLISH_DATE = "2000-12-12";
     private static final String INVALID_DATE = "1000/0001/1223";
     private static final String STOCK = "25";
     private static final String INVALID_STOCK = "12.12";

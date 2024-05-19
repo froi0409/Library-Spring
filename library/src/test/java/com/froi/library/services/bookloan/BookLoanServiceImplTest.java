@@ -18,6 +18,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.sql.Date;
+import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.Optional;
 
@@ -40,6 +41,7 @@ public class BookLoanServiceImplTest {
     private static final int NO_AVAILABLE_COPIES = 0;
     private static final String DATE_MORE_THAN_THREE_DAYS = "2024-05-01";
     private static final long TWO_DAYS_IN_MILLIS = 2 * 24 * 60 * 60 * 1000L;
+    private static final String NULL_DATE = null;
     
     @Mock
     private BookLoanRepository bookLoanRepository;
@@ -157,6 +159,27 @@ public class BookLoanServiceImplTest {
         when(bookLoanRepository.countByStudentAndStatus(STUDENT_ID)).thenReturn(STUDENT_LOANS);
         when(bookService.getBookByCode(BOOK_CODE)).thenReturn(Optional.of(book));
         when(bookLoanRepository.countAvailableCopies(BOOK_CODE, Date.valueOf(LOAN_DATE))).thenReturn(AVAILABLE_COPIES);
+        
+        // Act
+        boolean result = bookLoanService.createLoan(newLoan);
+        
+        // Assert
+        assertTrue(result);
+    }
+    
+    @Test
+    void testCreateLoanSuccessNoDate() throws EntityNotFoundException, DenegatedActionException, EntitySyntaxException {
+        // Arrange
+        CreateBookLoanDTO newLoan = new CreateBookLoanDTO(Arrays.asList(BOOK_CODE), STUDENT_ID, NULL_DATE);
+        Student student = new Student();
+        student.setId(STUDENT_ID);
+        student.setStatus(StudentStatus.ACTIVE);
+        Book book = new Book();
+        book.setCode(BOOK_CODE);
+        when(studentService.getStudentById(STUDENT_ID)).thenReturn(Optional.of(student));
+        when(bookLoanRepository.countByStudentAndStatus(STUDENT_ID)).thenReturn(STUDENT_LOANS);
+        when(bookService.getBookByCode(BOOK_CODE)).thenReturn(Optional.of(book));
+        when(bookLoanRepository.countAvailableCopies(BOOK_CODE, Date.valueOf(LocalDate.now()))).thenReturn(AVAILABLE_COPIES);
         
         // Act
         boolean result = bookLoanService.createLoan(newLoan);

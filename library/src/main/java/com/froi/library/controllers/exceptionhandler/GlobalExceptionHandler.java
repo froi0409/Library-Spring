@@ -1,9 +1,6 @@
 package com.froi.library.controllers.exceptionhandler;
 
-import com.froi.library.exceptions.DenegatedActionException;
-import com.froi.library.exceptions.DuplicatedEntityException;
-import com.froi.library.exceptions.EntityNotFoundException;
-import com.froi.library.exceptions.EntitySyntaxException;
+import com.froi.library.exceptions.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -30,5 +27,10 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(DenegatedActionException.class)
     public ResponseEntity<String> handleDenegatedActionException(DenegatedActionException ex) {
         return ResponseEntity.status(HttpStatus.FORBIDDEN).body(ex.getMessage());
+    }
+    
+    @ExceptionHandler(UploadDataFileException.class)
+    public ResponseEntity<String> handleUploadDataFileException(UploadDataFileException ex) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
     }
 }

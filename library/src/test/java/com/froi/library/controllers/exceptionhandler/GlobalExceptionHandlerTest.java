@@ -1,9 +1,6 @@
 package com.froi.library.controllers.exceptionhandler;
 
-import com.froi.library.exceptions.DenegatedActionException;
-import com.froi.library.exceptions.DuplicatedEntityException;
-import com.froi.library.exceptions.EntityNotFoundException;
-import com.froi.library.exceptions.EntitySyntaxException;
+import com.froi.library.exceptions.*;
 import org.apache.coyote.Response;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -68,5 +65,17 @@ public class GlobalExceptionHandlerTest {
         
         // Assert
         assertEquals(HttpStatus.FORBIDDEN, responseentity.getStatusCode());
+    }
+    
+    @Test
+    void testUploadDataFileException() {
+        // Arrange
+        UploadDataFileException ex = mock(UploadDataFileException.class);
+        
+        // Act
+        ResponseEntity<String> responseEntity = globalExceptionHandler.handleUploadDataFileException(ex);
+        
+        // Assert
+        assertEquals(HttpStatus.BAD_REQUEST, responseEntity.getStatusCode());
     }
 }

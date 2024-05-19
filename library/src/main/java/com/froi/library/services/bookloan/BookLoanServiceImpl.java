@@ -19,6 +19,7 @@ import org.springframework.stereotype.Service;
 import java.sql.Date;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -41,8 +42,10 @@ public class BookLoanServiceImpl implements BookLoanService {
     
     @Override
     public boolean createLoan(CreateBookLoanDTO newLoan) throws EntityNotFoundException, DenegatedActionException, EntitySyntaxException {
-        if (!toolsService.isValidDateFormat(newLoan.getLoanDate())) {
+        if (newLoan.getLoanDate() != null && !toolsService.isValidDateFormat(newLoan.getLoanDate())) {
             throw new EntitySyntaxException("INVALID_DATE");
+        } else if (newLoan.getLoanDate() == null) {
+            newLoan = new CreateBookLoanDTO(newLoan.getBookCodes(), newLoan.getStudentId(), LocalDate.now().toString());
         }
         Student student = studentService.getStudentById(newLoan.getStudentId())
                 .orElseThrow(() -> new EntityNotFoundException("STUDENT_NOT_FOUND"));
