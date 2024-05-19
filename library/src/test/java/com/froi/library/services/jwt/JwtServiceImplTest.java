@@ -106,7 +106,7 @@ public class JwtServiceImplTest {
     }
     
     @Test
-    void tertUpdateTokenExpirationUserDoesNotExist() {
+    void testUpdateTokenExpirationUserDoesNotExist() {
         // Arrange
         when(userRepository.findById(USERNAME)).thenReturn(Optional.empty());
         

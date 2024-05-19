@@ -28,7 +28,7 @@ public class Student {
     private Integer degree;
     
     @Column(name = "birth_date")
-    private String birthDate;
+    private Date birthDate;
     
     @Column
     private String email;

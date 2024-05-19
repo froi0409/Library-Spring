@@ -6,6 +6,6 @@ import java.util.List;
 
 @Value
 public class DataFileResponseDTO {
-    Integer record;
+    Integer records;
     List<DataFileError> errors;
 }

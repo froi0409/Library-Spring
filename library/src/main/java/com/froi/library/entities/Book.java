@@ -24,7 +24,7 @@ public class Book {
     private String title;
     
     @Column(name = "publish_date")
-    private String publishDate;
+    private Date publishDate;
     
     @Column
     private String publisher;

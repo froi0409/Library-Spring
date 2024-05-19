@@ -9,6 +9,7 @@ import com.froi.library.services.tools.ToolsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.sql.Date;
 import java.text.SimpleDateFormat;
 import java.util.Optional;
 
@@ -51,7 +52,7 @@ public class BookServiceImpl implements BookService {
         bookEntity.setAuthor(newBook.getAuthor());
         bookEntity.setPublisher(newBook.getPublisher());
         bookEntity.setCost(Double.parseDouble(newBook.getCost()));
-        bookEntity.setPublishDate(newBook.getPublishDate());
+        bookEntity.setPublishDate(Date.valueOf(newBook.getPublishDate()));
         bookEntity.setStock(Integer.parseInt(newBook.getStock()));
         
         bookRepository.save(bookEntity);

@@ -11,6 +11,7 @@ import com.froi.library.services.tools.ToolsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.sql.Date;
 import java.util.Optional;
 
 @Service
@@ -32,13 +33,13 @@ public class StudentServiceImpl implements StudentService {
             throw new DuplicatedEntityException("DUPLICATED_STUDENT");
         }
         
-        if (student.getEmail() != null && !toolsService.isValidEmail(student.getEmail())) {
+        if (!toolsService.isValidEmail(student.getEmail())) {
             throw new EntitySyntaxException("EMAIL_SYNTAX");
         }
         if (!toolsService.isValidDateFormat(student.getBirthDate())) {
             throw new EntitySyntaxException("STUDENT_BIRTH_DATE_SYNTAX");
         }
-        if (!student.getStatus().equals(StudentStatus.ACTIVE.name())) {
+        if (student.getStatus() != null && !student.getStatus().equals(StudentStatus.ACTIVE.name())) {
             throw new EntitySyntaxException("STUDENT_STATUS_SYNTAX");
         }
         if (!toolsService.isAlphabetic(student.getFirstName())) {
@@ -52,8 +53,9 @@ public class StudentServiceImpl implements StudentService {
         studentEntity.setId(student.getId());
         studentEntity.setFirstName(student.getFirstName());
         studentEntity.setLastName(student.getLastName());
-        studentEntity.setBirthDate(student.getBirthDate());
+        studentEntity.setBirthDate(Date.valueOf(student.getBirthDate()));
         studentEntity.setDegree(Integer.valueOf(student.getDegree()));
+        studentEntity.setEmail(student.getEmail());
         studentEntity.setStatus(StudentStatus.ACTIVE);
         
         studentRepository.save(studentEntity);

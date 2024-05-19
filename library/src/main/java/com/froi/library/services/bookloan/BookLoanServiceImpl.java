@@ -78,6 +78,8 @@ public class BookLoanServiceImpl implements BookLoanService {
             bookLoanEntity.setStudent(student.getId());
             bookLoanEntity.setBook(book.getCode());
             bookLoanEntity.setStatus(BookLoanStatus.IN_TIME);
+            
+            bookLoanRepository.save(bookLoanEntity);
         }
         
         return true;

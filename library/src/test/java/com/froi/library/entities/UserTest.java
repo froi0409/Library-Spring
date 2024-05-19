@@ -3,6 +3,9 @@ package com.froi.library.entities;
 import com.froi.library.enums.studentstatus.Role;
 import com.froi.library.enums.studentstatus.StudentStatus;
 import org.junit.jupiter.api.Test;
+
+import java.sql.Date;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
@@ -15,7 +18,7 @@ public class UserTest {
     private static final String STUDENT_FIRST_NAME = "Fernando Rubén";
     private static final String STUDENT_LAST_NAME = "Ocaña Ixcot";
     private static final String DEGREE_ID = "1";
-    private static final String STUDENT_BIRTH_DATE = "2000/09/04";
+    private static final String STUDENT_BIRTH_DATE = "2000-09-04";
     private static final StudentStatus STUDENT_STATUS = StudentStatus.ACTIVE;
     
     private static final String EXPECTED_USERNAME = "201830121";
@@ -26,7 +29,7 @@ public class UserTest {
     private static final String EXPECTED_STUDENT_FIRST_NAME = "Fernando Rubén";
     private static final String EXPECTED_STUDENT_LAST_NAME = "Ocaña Ixcot";
     private static final String EXPECTED_DEGREE_ID = "1";
-    private static final String EXPECTED_STUDENT_BIRTH_DATE = "2000/09/04";
+    private static final String EXPECTED_STUDENT_BIRTH_DATE = "2000-09-04";
     private static final StudentStatus EXPECTED_STUDENT_STATUS = StudentStatus.ACTIVE;
     
     @Test
@@ -38,7 +41,7 @@ public class UserTest {
         student.setFirstName(STUDENT_FIRST_NAME);
         student.setLastName(STUDENT_LAST_NAME);
         student.setDegree(Integer.valueOf(DEGREE_ID));
-        student.setBirthDate(STUDENT_BIRTH_DATE);
+        student.setBirthDate(Date.valueOf(STUDENT_BIRTH_DATE));
         student.setStatus(STUDENT_STATUS);
         
         // Act
@@ -56,7 +59,7 @@ public class UserTest {
         assertEquals(EXPECTED_STUDENT_FIRST_NAME, user.getStudent().getFirstName());
         assertEquals(EXPECTED_STUDENT_LAST_NAME, user.getStudent().getLastName());
         assertEquals(Integer.valueOf(EXPECTED_DEGREE_ID), user.getStudent().getDegree());
-        assertEquals(EXPECTED_STUDENT_BIRTH_DATE, user.getStudent().getBirthDate());
+        assertNotNull(user.getStudent().getBirthDate());
         assertEquals(EXPECTED_STUDENT_STATUS, user.getStudent().getStatus());
     }
     

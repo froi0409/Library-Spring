@@ -15,7 +15,7 @@ public interface BookLoanRepository extends JpaRepository<BookLoan, Integer> {
     
     @Query(value = "SELECT b.stock - " +
             "(SELECT COUNT(*) FROM public.book_loan bl WHERE bl.book = :bookCode AND bl.status IN ('IN_TIME', 'OUT_OF_TIME')) - " +
-            "(SELECT COUNT(*) FROM public.reservation r WHERE r.book = :bookCode AND r.reservation_validated >= :specificDate - INTERVAL '1 day') " +
+            "(SELECT COUNT(*) FROM public.reservation r WHERE r.book = :bookCode AND r.reservation_validated >= (CAST(:specificDate AS timestamp) - INTERVAL '1 day')) " +
             "FROM public.book b WHERE b.code = :bookCode", nativeQuery = true)
     Integer countAvailableCopies(@Param("bookCode") String bookCode, @Param("specificDate") Date specificDate);
     
