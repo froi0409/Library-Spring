@@ -4,6 +4,8 @@ import org.springframework.stereotype.Service;
 
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @Service
 public class ToolsServiceImpl implements ToolsService{
@@ -97,5 +99,12 @@ public class ToolsServiceImpl implements ToolsService{
         return str.matches("[a-zA-ZáéíóúÁÉÍÓÚüÜñÑ\\s]+");
     }
     
-    
+    @Override
+    public boolean isValidEmail(String email) {
+        String emailPattern = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$";
+        Pattern pattern = Pattern.compile(emailPattern);
+        Matcher matcher = pattern.matcher(email);
+        
+        return matcher.matches();
+    }
 }

@@ -27,9 +27,14 @@ public class JwtServiceImplTest {
     public static final String INVALID_TOKEN = "invalid_token";
     public static final String EXPIRED_TOKEN = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIyMDE4MzAxMjEiLCJyb2xlIjoiU1RVREVOVCIsIm5hbWUiOiJKb2huIERvZSIsImlhdCI6MTY0Mzc5ODQwMCwiZXhwIjoxNjc1MzM0NDAwfQ.LE8tMxTKmzu-DJEgFXx3kFn_zIF0EXHeIh3YxZF2XEc";
     public static final Role ROLE = Role.STUDENT;
+    private static final String TOKEN = "eyJhbGciOiJIUzM4NCJ9.eyJyb2xlIjoiTElCUkFSSUFOIiwic3ViIjoibGlicmFyaWFuMSIsImV4cCI6MTcxNTkzNTAwNCwiaWF0IjoxNzE1OTMzMjA0fQ.oEE-aJevlrwFJiPiaR9tluf3mrcFKWHOJ0He8l4Sa14DwQ2fNDA5pGEz0SNQHssu";
+    private static final String CLAIMS_STRING = "sampleClaimsString";
     
     @Mock
     UserRepository userRepository;
+    
+    @Mock
+    private Claims claims;
     
     @InjectMocks
     JwtServiceImpl serviceToTest;

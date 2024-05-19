@@ -32,7 +32,6 @@ public class UserTest {
     @Test
     void testUser() {
         // Arrange
-        String degree = DEGREE_ID;
         User user = new User();
         Student student = new Student();
         student.setId(STUDENT_ID);
@@ -41,7 +40,6 @@ public class UserTest {
         student.setDegree(Integer.valueOf(DEGREE_ID));
         student.setBirthDate(STUDENT_BIRTH_DATE);
         student.setStatus(STUDENT_STATUS);
-        
         
         // Act
         user.setUsername(USERNAME);
@@ -53,7 +51,14 @@ public class UserTest {
         assertEquals(EXPECTED_USERNAME, user.getUsername());
         assertEquals(EXPECTED_PASSWORD, user.getPassword());
         assertEquals(EXPECTED_ROLE, user.getRole());
-        assertNotNull(student);
+        assertNotNull(user.getStudent());
+        assertEquals(EXPECTED_STUDENT_ID, user.getStudent().getId());
+        assertEquals(EXPECTED_STUDENT_FIRST_NAME, user.getStudent().getFirstName());
+        assertEquals(EXPECTED_STUDENT_LAST_NAME, user.getStudent().getLastName());
+        assertEquals(Integer.valueOf(EXPECTED_DEGREE_ID), user.getStudent().getDegree());
+        assertEquals(EXPECTED_STUDENT_BIRTH_DATE, user.getStudent().getBirthDate());
+        assertEquals(EXPECTED_STUDENT_STATUS, user.getStudent().getStatus());
     }
+    
     
 }

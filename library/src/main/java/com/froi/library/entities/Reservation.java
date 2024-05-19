@@ -27,6 +27,9 @@ public class Reservation {
     @Column(name = "reservation_date")
     private Date reservationDate;
     
+    @Column(name = "reservation_validated")
+    private Date reservationValidated;
+    
     @Column
     @Enumerated(EnumType.STRING)
     private BookReservationStatus status;

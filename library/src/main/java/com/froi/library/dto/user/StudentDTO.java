@@ -12,4 +12,5 @@ public class StudentDTO {
     String degree;
     String birthDate;
     String status;
+    String email;
 }

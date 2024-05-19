@@ -29,10 +29,12 @@ public class StudentServiceImplTest {
     private static final String VALID_BIRTH_DATE = "2000-09-04";
     private static final String VALID_DEGREE = "1";
     private static final String VALID_STATUS = "ACTIVE";
+    private static final String VALID_EMAIL = "fernandoocana201830121@cunoc.edu.gt";
     private static final String INVALID_DATE = "20-01-2000";
     private static final String INVALID_STATUS = "Inactive";
     private static final String INVALID_NAME_WITH_NUMBER = "John2";
     private static final String INVALID_NAME_WITH_SPECIAL_CHAR = "John@Doe";
+    private static final String INVALID_EMAIL = "asdfadasf";
     private static final boolean TRUE_ASSERTION = true;
     private static final boolean FALSE_ASSERTION = false;
     
@@ -47,7 +49,7 @@ public class StudentServiceImplTest {
     @Test
     void testDuplicatedStudent() {
         // Arrange
-        StudentDTO newStudent = new StudentDTO(VALID_ID, VALID_FIRST_NAME, VALID_LAST_NAME, VALID_DEGREE, VALID_BIRTH_DATE, VALID_STATUS);
+        StudentDTO newStudent = new StudentDTO(VALID_ID, VALID_FIRST_NAME, VALID_LAST_NAME, VALID_DEGREE, VALID_BIRTH_DATE, VALID_STATUS, VALID_EMAIL);
         when(studentRepository.findById(newStudent.getId()))
                 .thenReturn(Optional.of(new Student()));
         
@@ -57,11 +59,26 @@ public class StudentServiceImplTest {
     }
     
     @Test
-    void testInvalidDateFormat() {
+    void testInvalidEmailFormat() {
         // Arrange
-        StudentDTO studentDTO = new StudentDTO(VALID_ID, VALID_FIRST_NAME, VALID_LAST_NAME, INVALID_DATE, VALID_DEGREE, StudentStatus.ACTIVE.name());
+        StudentDTO studentDTO = new StudentDTO(VALID_ID, VALID_FIRST_NAME, VALID_LAST_NAME, INVALID_DATE, VALID_DEGREE, StudentStatus.ACTIVE.name(), INVALID_EMAIL);
         when(studentRepository.findById(studentDTO.getId()))
                 .thenReturn(Optional.empty());
+        when(toolsService.isValidEmail(studentDTO.getEmail()))
+                .thenReturn(FALSE_ASSERTION);
+    
+        // Act & Assert
+        assertThrows(EntitySyntaxException.class, () -> serviceToTest.createStudent(studentDTO));
+    }
+    
+    @Test
+    void testInvalidDateFormat() {
+        // Arrange
+        StudentDTO studentDTO = new StudentDTO(VALID_ID, VALID_FIRST_NAME, VALID_LAST_NAME, INVALID_DATE, VALID_DEGREE, StudentStatus.ACTIVE.name(), VALID_EMAIL);
+        when(studentRepository.findById(studentDTO.getId()))
+                .thenReturn(Optional.empty());
+        when(toolsService.isValidEmail(studentDTO.getEmail()))
+                .thenReturn(TRUE_ASSERTION);
         when(toolsService.isValidDateFormat(studentDTO.getBirthDate())).thenReturn(FALSE_ASSERTION);
         
         // Act & Assert
@@ -71,10 +88,13 @@ public class StudentServiceImplTest {
     @Test
     void testInvalidStatus() {
         // Arrange
-        StudentDTO studentDTO = new StudentDTO(VALID_ID, VALID_FIRST_NAME, VALID_LAST_NAME, VALID_BIRTH_DATE, VALID_DEGREE, INVALID_STATUS);
+        StudentDTO studentDTO = new StudentDTO(VALID_ID, VALID_FIRST_NAME, VALID_LAST_NAME, VALID_BIRTH_DATE, VALID_DEGREE, INVALID_STATUS, VALID_EMAIL);
         when(studentRepository.findById(studentDTO.getId()))
                 .thenReturn(Optional.empty());
-        when(toolsService.isValidDateFormat(studentDTO.getBirthDate())).thenReturn(TRUE_ASSERTION);
+        when(toolsService.isValidEmail(studentDTO.getEmail()))
+                .thenReturn(TRUE_ASSERTION);
+        when(toolsService.isValidDateFormat(studentDTO.getBirthDate()))
+                .thenReturn(TRUE_ASSERTION);
         
         // Act & Assert
         assertThrows(EntitySyntaxException.class, () -> serviceToTest.createStudent(studentDTO));
@@ -83,10 +103,13 @@ public class StudentServiceImplTest {
     @Test
     void testInvalidFirstName() {
         // Arrange
-        StudentDTO studentDTO = new StudentDTO(VALID_ID, INVALID_NAME_WITH_NUMBER, VALID_LAST_NAME, VALID_BIRTH_DATE, VALID_DEGREE, StudentStatus.ACTIVE.name());
+        StudentDTO studentDTO = new StudentDTO(VALID_ID, INVALID_NAME_WITH_NUMBER, VALID_LAST_NAME, VALID_BIRTH_DATE, VALID_DEGREE, StudentStatus.ACTIVE.name(), VALID_EMAIL);
         when(studentRepository.findById(studentDTO.getId()))
                 .thenReturn(Optional.empty());
-        when(toolsService.isValidDateFormat(studentDTO.getBirthDate())).thenReturn(TRUE_ASSERTION);
+        when(toolsService.isValidEmail(studentDTO.getEmail()))
+                .thenReturn(TRUE_ASSERTION);
+        when(toolsService.isValidDateFormat(studentDTO.getBirthDate()))
+                .thenReturn(TRUE_ASSERTION);
         when(toolsService.isAlphabetic(studentDTO.getFirstName()))
                 .thenReturn(FALSE_ASSERTION);
         // Act & Assert
@@ -96,10 +119,13 @@ public class StudentServiceImplTest {
     @Test
     void testInvalidLastName() {
         // Arrange
-        StudentDTO studentDTO = new StudentDTO(VALID_ID, VALID_FIRST_NAME, INVALID_NAME_WITH_SPECIAL_CHAR, VALID_BIRTH_DATE, VALID_DEGREE, StudentStatus.ACTIVE.name());
+        StudentDTO studentDTO = new StudentDTO(VALID_ID, VALID_FIRST_NAME, INVALID_NAME_WITH_SPECIAL_CHAR, VALID_BIRTH_DATE, VALID_DEGREE, StudentStatus.ACTIVE.name(), VALID_EMAIL);
         when(studentRepository.findById(studentDTO.getId()))
                 .thenReturn(Optional.empty());
-        when(toolsService.isValidDateFormat(studentDTO.getBirthDate())).thenReturn(TRUE_ASSERTION);
+        when(toolsService.isValidEmail(studentDTO.getEmail()))
+                .thenReturn(TRUE_ASSERTION);
+        when(toolsService.isValidDateFormat(studentDTO.getBirthDate()))
+                .thenReturn(TRUE_ASSERTION);
         when(toolsService.isAlphabetic(studentDTO.getFirstName()))
                 .thenReturn(TRUE_ASSERTION);
         when(toolsService.isAlphabetic(studentDTO.getLastName()))
@@ -112,10 +138,13 @@ public class StudentServiceImplTest {
     @Test
     void testValidStudent() throws DuplicatedEntityException, EntitySyntaxException {
         // Arrange
-        StudentDTO studentDTO = new StudentDTO(VALID_ID, VALID_FIRST_NAME, VALID_LAST_NAME, VALID_DEGREE, VALID_BIRTH_DATE, StudentStatus.ACTIVE.name());
+        StudentDTO studentDTO = new StudentDTO(VALID_ID, VALID_FIRST_NAME, VALID_LAST_NAME, VALID_DEGREE, VALID_BIRTH_DATE, StudentStatus.ACTIVE.name(), VALID_EMAIL);
         when(studentRepository.findById(studentDTO.getId()))
                 .thenReturn(Optional.empty());
-        when(toolsService.isValidDateFormat(studentDTO.getBirthDate())).thenReturn(TRUE_ASSERTION);
+        when(toolsService.isValidEmail(studentDTO.getEmail()))
+                .thenReturn(TRUE_ASSERTION);
+        when(toolsService.isValidDateFormat(studentDTO.getBirthDate()))
+                .thenReturn(TRUE_ASSERTION);
         when(toolsService.isAlphabetic(studentDTO.getFirstName()))
                 .thenReturn(TRUE_ASSERTION);
         when(toolsService.isAlphabetic(studentDTO.getLastName()))

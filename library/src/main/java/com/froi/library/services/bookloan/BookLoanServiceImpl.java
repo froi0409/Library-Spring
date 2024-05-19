@@ -1,13 +1,27 @@
 package com.froi.library.services.bookloan;
 
+import com.froi.library.dto.bookloan.CreateBookLoanDTO;
+import com.froi.library.entities.Book;
 import com.froi.library.entities.BookLoan;
+import com.froi.library.entities.Student;
+import com.froi.library.enums.bookstatus.BookLoanStatus;
+import com.froi.library.enums.studentstatus.StudentStatus;
+import com.froi.library.exceptions.DenegatedActionException;
+import com.froi.library.exceptions.EntityNotFoundException;
+import com.froi.library.exceptions.EntitySyntaxException;
 import com.froi.library.repositories.BookLoanRepository;
 import com.froi.library.services.book.BookService;
 import com.froi.library.services.student.StudentService;
 import com.froi.library.services.tools.ToolsService;
-import com.froi.library.services.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.sql.Date;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 @Service
 public class BookLoanServiceImpl implements BookLoanService {
@@ -25,8 +39,61 @@ public class BookLoanServiceImpl implements BookLoanService {
         this.studentService = studentService;
     }
     
-    public BookLoan doLoan() {
-        return null;
+    @Override
+    public boolean createLoan(CreateBookLoanDTO newLoan) throws EntityNotFoundException, DenegatedActionException, EntitySyntaxException {
+        if (!toolsService.isValidDateFormat(newLoan.getLoanDate())) {
+            throw new EntitySyntaxException("INVALID_DATE");
+        }
+        Student student = studentService.getStudentById(newLoan.getStudentId())
+                .orElseThrow(() -> new EntityNotFoundException("STUDENT_NOT_FOUND"));
+        if (student.getStatus() != StudentStatus.ACTIVE) {
+            throw new DenegatedActionException("STUDENT_IS_INACTIVE");
+        }
+        
+        List<Book> booksList = new ArrayList<>();
+        for (String bookCode: newLoan.getBookCodes()) {
+           Book book = bookService.getBookByCode(bookCode)
+                   .orElseThrow(() -> new EntityNotFoundException(bookCode + "BOOK_NOT_FOUND"));
+           booksList.add(book);
+        }
+        
+        Long studentLoans = bookLoanRepository.countByStudentAndStatus(student.getId());
+        if (studentLoans >= 3) {
+            throw new DenegatedActionException("STUDENT_HAS_3_OR_MORE_LOANS");
+        }
+        String unavaliableCopies = "";
+        for (Book book: booksList) {
+            Integer availableCopies = bookLoanRepository.countAvailableCopies(book.getCode(), Date.valueOf(newLoan.getLoanDate()));
+            if (availableCopies <= 0) {
+                unavaliableCopies += book.getCode() + " ";
+            }
+        }
+        if (!unavaliableCopies.isEmpty()) {
+            throw new EntityNotFoundException(unavaliableCopies + "NOT_FOUND");
+        }
+        
+        for (Book book: booksList) {
+            BookLoan bookLoanEntity = new BookLoan();
+            bookLoanEntity.setLoanDate(Date.valueOf(newLoan.getLoanDate()));
+            bookLoanEntity.setStudent(student.getId());
+            bookLoanEntity.setBook(book.getCode());
+            bookLoanEntity.setStatus(BookLoanStatus.IN_TIME);
+        }
+        
+        return true;
     }
     
+    public boolean isMoreThanThreeDays(Date dateString) {
+        // Get today's date
+        java.util.Date today = new java.util.Date();
+        Date sqlToday = new java.sql.Date(today.getTime());
+        
+        // Calculate the difference in milliseconds
+        long diffInMillies = sqlToday.getTime() - dateString.getTime();
+        // Convert the difference from milliseconds to days
+        long diffInDays = TimeUnit.DAYS.convert(diffInMillies, TimeUnit.MILLISECONDS);
+        
+        // Return true if the difference is greater than 3 days
+        return diffInDays > 3;
+    }
 }

@@ -15,6 +15,7 @@ import java.util.Date;
 @NoArgsConstructor
 public class BookLoan {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column
     private Integer id;
     

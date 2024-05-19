@@ -52,12 +52,6 @@ public class JwtServiceImpl implements JwtService {
     }
     
     @Override
-    public String getPayload(String token) {
-        Claims claims = extractClaims(token);
-        return claims.toString();
-    }
-    
-    @Override
     public boolean isValid(String token) {
         Claims claims = extractClaims(token);
         System.out.println("ROLE - " + claims.get("role"));
@@ -85,7 +79,7 @@ public class JwtServiceImpl implements JwtService {
         }
         return true;
     }
-
+    
     public SecretKey getSecretKey() {
         byte[] keyBytes = Decoders.BASE64.decode(SECRET_PHRASE);
         return Keys.hmacShaKeyFor(keyBytes);

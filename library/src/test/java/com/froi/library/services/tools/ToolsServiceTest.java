@@ -33,6 +33,8 @@ public class ToolsServiceTest {
     private static final String INVALID_SPECIAL_CHAR_STRING = "Hello!";
     private static final String NULL_STRING = null;
     private static final String EMPTY_STRING = "";
+    private static final String VALID_EMAIL = "fernandoocana201830121@cunoc.edu.gt";
+    private static final String INVALID_EMAIL = "correo.invalido";
     
     @InjectMocks
     private ToolsServiceImpl serviceToTest;
@@ -207,5 +209,28 @@ public class ToolsServiceTest {
         assertFalse(result);
     }
     
+    @Test
+    public void isValidEmail_ValidEmail_ReturnsTrue() {
+        // Arrange
+        String email = VALID_EMAIL;
+        
+        // Act
+        boolean result = serviceToTest.isValidEmail(email);
+        
+        // Assert
+        assertTrue(result);
+    }
+    
+    @Test
+    public void isValidEmail_InvalidEmail_ReturnsFalse() {
+        // Arrange
+        String email = INVALID_EMAIL;
+        
+        // Act
+        boolean result = serviceToTest.isValidEmail(email);
+        
+        // Assert
+        assertFalse(result);
+    }
     
 }

@@ -2,9 +2,11 @@ package com.froi.library.dto.bookloan;
 
 import lombok.Value;
 
+import java.util.List;
+
 @Value
 public class CreateBookLoanDTO {
-    String bookCode;
+    List<String> bookCodes;
     String studentId;
-    String degreeId;
+    String loanDate;
 }

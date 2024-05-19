@@ -15,8 +15,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.sql.Date;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -122,6 +121,33 @@ public class BookServiceImplTest {
         
         // Assert
         assertNotNull(result);
+    }
+    
+    @Test
+    void testGetBookByCode() {
+        // Arrange
+        Book book = new Book();
+        book.setCode(CODE);
+        when(bookRepository.findById(CODE)).thenReturn(Optional.of(book));
+        
+        // Act
+        Optional<Book> result = serviceToTest.getBookByCode(CODE);
+        
+        // Assert
+        assertTrue(result.isPresent());
+        assertEquals(CODE, result.get().getCode());
+    }
+    
+    @Test
+    void testGetBookByCodeNotFound() {
+        // Arrange
+        when(bookRepository.findById(CODE)).thenReturn(Optional.empty());
+        
+        // Act
+        Optional<Book> result = serviceToTest.getBookByCode(CODE);
+        
+        // Assert
+        assertTrue(result.isEmpty());
     }
     
 }

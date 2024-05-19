@@ -59,6 +59,8 @@ public class BookServiceImpl implements BookService {
         return bookEntity;
     }
     
-    
+    public Optional<Book> getBookByCode(String bookCode) {
+        return bookRepository.findById(bookCode);
+    }
     
 }

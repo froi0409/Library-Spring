@@ -60,7 +60,7 @@ public class UserServiceImpl implements UserService{
                 throw new DuplicatedEntityException("STUDENT_USER_DUPLICATED");
             }
             userEntity.setRole(Role.STUDENT);
-            userEntity.setStudent(userEntity.getStudent());
+            userEntity.setStudent(checkStudent);
         } else {
             userEntity.setRole(Role.LIBRARIAN);
         }

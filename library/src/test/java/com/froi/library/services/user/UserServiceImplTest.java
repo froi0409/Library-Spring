@@ -46,6 +46,8 @@ public class UserServiceImplTest {
     private static final String DEGREE_ID = "1";
     private static final String STUDENT_BIRTH_DATE = "2000/09/04";
     private static final StudentStatus STUDENT_STATUS = StudentStatus.ACTIVE;
+    private static final String VALID_EMAIL = "fernandoocana201830121@cunoc.edu.gt";
+    private static final String INVALID_EMAIL = "correo.invalido";
     
     @Mock
     UserRepository userRepository;
@@ -92,7 +94,7 @@ public class UserServiceImplTest {
     @Test
     void testValidStudent() throws DuplicatedEntityException, EntitySyntaxException, EntityNotFoundException {
         // Arrange
-        StudentDTO student = new StudentDTO(STUDENT_ID, STUDENT_FIRST_NAME, STUDENT_LAST_NAME, DEGREE_ID, STUDENT_BIRTH_DATE, STUDENT_STATUS.name());
+        StudentDTO student = new StudentDTO(STUDENT_ID, STUDENT_FIRST_NAME, STUDENT_LAST_NAME, DEGREE_ID, STUDENT_BIRTH_DATE, STUDENT_STATUS.name(), VALID_EMAIL);
         CreateUserRequestDTO newUser = new CreateUserRequestDTO(EXPECTED_STUDENT_USERNAME, EXPECTED_PASSWORD, STUDENT_ID);
         when(userRepository.findById((newUser.getUsername())))
                 .thenReturn(Optional.empty());
@@ -113,7 +115,7 @@ public class UserServiceImplTest {
     @Test
     void testDuplicatedStudent() throws EntityNotFoundException {
         // Arrange
-        StudentDTO student = new StudentDTO(STUDENT_ID, STUDENT_FIRST_NAME, STUDENT_LAST_NAME, DEGREE_ID, STUDENT_BIRTH_DATE, STUDENT_STATUS.name());
+        StudentDTO student = new StudentDTO(STUDENT_ID, STUDENT_FIRST_NAME, STUDENT_LAST_NAME, DEGREE_ID, STUDENT_BIRTH_DATE, STUDENT_STATUS.name(), VALID_EMAIL);
         Student studentEntity = new Student();
         studentEntity.setId(STUDENT_ID);
         CreateUserRequestDTO newUser = new CreateUserRequestDTO(EXPECTED_STUDENT_USERNAME, EXPECTED_PASSWORD, STUDENT_ID);

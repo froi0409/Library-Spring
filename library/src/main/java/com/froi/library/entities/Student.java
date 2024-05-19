@@ -31,6 +31,9 @@ public class Student {
     private String birthDate;
     
     @Column
+    private String email;
+    
+    @Column
     @Enumerated(EnumType.STRING)
     private StudentStatus status;
 }

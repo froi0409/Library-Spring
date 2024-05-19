@@ -32,6 +32,9 @@ public class StudentServiceImpl implements StudentService {
             throw new DuplicatedEntityException("DUPLICATED_STUDENT");
         }
         
+        if (student.getEmail() != null && !toolsService.isValidEmail(student.getEmail())) {
+            throw new EntitySyntaxException("EMAIL_SYNTAX");
+        }
         if (!toolsService.isValidDateFormat(student.getBirthDate())) {
             throw new EntitySyntaxException("STUDENT_BIRTH_DATE_SYNTAX");
         }

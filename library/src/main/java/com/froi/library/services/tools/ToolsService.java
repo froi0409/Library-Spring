@@ -12,4 +12,6 @@ public interface ToolsService {
     boolean isPositiveInteger(String numberString);
     
     boolean isAlphabetic(String str);
+    
+    boolean isValidEmail(String email);
 }
