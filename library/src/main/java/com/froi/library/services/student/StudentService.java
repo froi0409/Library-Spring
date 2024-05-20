@@ -12,4 +12,6 @@ public interface StudentService {
     Student createStudent(StudentDTO student) throws DuplicatedEntityException, EntitySyntaxException;
     
     Optional<Student> getStudentById(String id) throws EntityNotFoundException;
+    
+    Student getOneStudentById(String id) throws EntityNotFoundException;
 }

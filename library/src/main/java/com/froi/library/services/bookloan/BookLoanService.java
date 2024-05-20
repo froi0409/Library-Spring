@@ -7,4 +7,6 @@ import com.froi.library.exceptions.EntitySyntaxException;
 
 public interface BookLoanService {
     boolean createLoan(CreateBookLoanDTO newLoan) throws EntityNotFoundException, DenegatedActionException, EntitySyntaxException;
+    
+    Integer checkAvailability(String bookId);
 }

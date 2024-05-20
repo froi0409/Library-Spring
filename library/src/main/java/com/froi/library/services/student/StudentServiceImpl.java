@@ -67,4 +67,10 @@ public class StudentServiceImpl implements StudentService {
     public Optional<Student> getStudentById(String id) {
         return studentRepository.findById(id);
     }
+    
+    @Override
+    public Student getOneStudentById(String id) throws EntityNotFoundException {
+        return studentRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("STUDENT_NOT_FOUND"));
+    }
 }

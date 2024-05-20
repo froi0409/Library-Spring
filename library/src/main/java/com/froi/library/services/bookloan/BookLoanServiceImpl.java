@@ -17,8 +17,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.sql.Date;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -101,4 +99,12 @@ public class BookLoanServiceImpl implements BookLoanService {
         // Return true if the difference is greater than 3 days
         return diffInDays > 3;
     }
+    
+    @Override
+    public Integer checkAvailability(String bookId) {
+        System.out.println("disponibilidad");
+        Date today = Date.valueOf(LocalDate.now());
+        return bookLoanRepository.countAvailableCopies(bookId, today);
+    }
+    
 }

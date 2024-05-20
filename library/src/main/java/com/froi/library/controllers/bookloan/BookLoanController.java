@@ -6,9 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/v1/bookloan")
@@ -27,5 +25,12 @@ public class BookLoanController {
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .body("CREATED");
+    }
+
+    @GetMapping(path = "/availability/{bookId}")
+    @PreAuthorize("hasRole('LIBRARIAN')")
+    public ResponseEntity<Integer> getBookAvailability(@PathVariable String bookId) {
+        return ResponseEntity
+                .ok(bookLoanService.checkAvailability(bookId));
     }
 }
