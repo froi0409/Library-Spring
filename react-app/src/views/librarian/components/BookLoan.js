@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useCookies } from 'react-cookie';
 import BooksOrderTable from './BooksOrderTable';
-import { number } from 'prop-types';
+import { set } from 'lodash';
 
 export const API_URL = process.env.REACT_APP_URL_BACKEND;
 
@@ -20,7 +20,7 @@ const BookLoan = () => {
     const [booksList, setBooksList] = useState([]);
     const [response, setResponse] = useState('');
     const [cookies] = useCookies(['jwt']);
-    const [maxBooks, setMaxBooks] = useState(3); // Estado para el número máximo de libros permitidos
+    const [maxBooks, setMaxBooks] = useState(0); // Estado para el número máximo de libros permitidos
 
     useEffect(() => {
         const timeoutId = setTimeout(() => {
@@ -62,11 +62,43 @@ const BookLoan = () => {
         return () => clearTimeout(timeoutId);
     }, [studentId]);
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        setSubmitted(true);
-        setMessageType('OK');
-        setResponse('Préstamo creado exitosamente');
+        try {
+            const booksLoanList = booksList.map((book) => book.code);
+
+            const formData = {
+                bookCodes: booksLoanList,
+                studentId: studentId
+            }
+
+            console.log('formdata',formData)
+
+            console.log('prestamo realizado');
+            const res = await axios.post(`${API_URL}/v1/bookloan`, formData, {
+                headers: {
+                    Authorization: cookies.jwt
+                }
+            })
+            setSubmitted(true);
+            setFindSubmitted(false);
+
+            if (res.status === 201) {
+                setMessageType('OK');
+                setResponse('Prestamo creado con éxito');
+                
+                setStudentId('');
+                setBooksList([]);
+            } else {
+                setMessageType('ERR');
+                setResponse('No se pudo realizar el préstamo: ' + res.data.message)
+            }
+        } catch (error) {
+            setSubmitted(true);
+            setFindSubmitted(false);
+            setMessageType('ERR');
+            setResponse('No se pudo realizar el préstamo: ' + error.response.data)
+        }
     };
 
     const updateBookInformation = async () => {
@@ -102,7 +134,6 @@ const BookLoan = () => {
     };
 
     const handleSearch = async (e) => {
-        e.preventDefault();
         setFindSubmitted(true);
         try {
             const res = await axios.get(`${API_URL}/v1/bookloan/availability/${findBookCode}`, {
@@ -129,6 +160,10 @@ const BookLoan = () => {
             setFindMessageType('ERR');
             setResponse('No se encontró el libro');
         } 
+    };
+
+    const handleRemoveBook = (code) => {
+        setBooksList(prevBooksList => prevBooksList.filter(book => book.code !== code));
     };
 
     return (
@@ -172,7 +207,6 @@ const BookLoan = () => {
                                         fullWidth
                                         label='Código de Libro'
                                         placeholder='ISBN válido'
-                                        required
                                         value={findBookCode}
                                         onChange={(e) => setFindBookCode(e.target.value)}
                                         InputProps={{
@@ -192,7 +226,7 @@ const BookLoan = () => {
                             </Grid>
                         </Grid>
                         <Grid item xs={12}>
-                            <BooksOrderTable booksList={booksList} />
+                            <BooksOrderTable booksList={booksList} handleRemoveBook={handleRemoveBook} />
                         </Grid>
                         <Grid item xs={12}>
                             <Grid container spacing={5}>
@@ -202,7 +236,7 @@ const BookLoan = () => {
                                     </Button>
                                 </Grid>
                                 <Grid item xs={10}>
-                                    {/* Aquí puedes agregar más contenido si es necesario */}
+                                    {}
                                 </Grid>
                             </Grid>
                         </Grid>

@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface StudentRepository extends JpaRepository<Student, String> {
-    @Query(value = "SELECT COUNT(*) FROM public.book_loan " +
+    @Query(value = "SELECT 3-COUNT(*) FROM public.book_loan " +
             "WHERE student = :studentId " +
             "AND status IN ('IN_TIME', 'OUT_OF_TIME')",
             nativeQuery = true)
