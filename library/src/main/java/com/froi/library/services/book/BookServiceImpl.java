@@ -3,10 +3,10 @@ package com.froi.library.services.book;
 import com.froi.library.dto.book.CreateBookRequestDTO;
 import com.froi.library.entities.Book;
 import com.froi.library.exceptions.DuplicatedEntityException;
+import com.froi.library.exceptions.EntityNotFoundException;
 import com.froi.library.exceptions.EntitySyntaxException;
 import com.froi.library.repositories.BookRepository;
 import com.froi.library.services.tools.ToolsService;
-import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -66,7 +66,7 @@ public class BookServiceImpl implements BookService {
     }
     
     @Override
-    public Book getOneBookByCode(String bookCode) {
+    public Book getOneBookByCode(String bookCode) throws EntityNotFoundException {
         return bookRepository.findById(bookCode)
                 .orElseThrow(() -> new EntityNotFoundException("BOOK_NOT_FOUND"));
     }

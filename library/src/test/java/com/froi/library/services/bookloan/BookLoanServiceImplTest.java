@@ -42,6 +42,8 @@ public class BookLoanServiceImplTest {
     private static final String DATE_MORE_THAN_THREE_DAYS = "2024-05-01";
     private static final long TWO_DAYS_IN_MILLIS = 2 * 24 * 60 * 60 * 1000L;
     private static final String NULL_DATE = null;
+    private static final Integer AVAILABLE_BOOKS = 5;
+    private static final Integer EXPECTED_AVAILABLE_BOOKS = 5;
     
     @Mock
     private BookLoanRepository bookLoanRepository;
@@ -210,5 +212,21 @@ public class BookLoanServiceImplTest {
         
         // Assert
         assertFalse(resultLessThanThreeDays);
+    }
+    
+    @Test
+    void testCheckAvailability() {
+        // Arrange
+        String bookId = BOOK_CODE;
+        Date today = Date.valueOf(LocalDate.now());
+        when(bookLoanRepository.countAvailableCopies(BOOK_CODE, today))
+                .thenReturn(AVAILABLE_BOOKS);
+        
+        
+        // Act
+        Integer checkAvailability = bookLoanService.checkAvailability(bookId);
+        
+        // Assert
+        assertEquals(checkAvailability, EXPECTED_AVAILABLE_BOOKS);
     }
 }

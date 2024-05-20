@@ -32,12 +32,14 @@ public class StudentServiceImplTest {
     private static final String VALID_EMAIL = "fernandoocana201830121@cunoc.edu.gt";
     private static final String INVALID_DATE = "20-01-2000";
     private static final String INVALID_STATUS = "Inactive";
+    private static final String NULL_STATUS = null;
     private static final String INVALID_NAME_WITH_NUMBER = "John2";
     private static final String INVALID_NAME_WITH_SPECIAL_CHAR = "John@Doe";
     private static final String INVALID_EMAIL = "asdfadasf";
     private static final boolean TRUE_ASSERTION = true;
     private static final boolean FALSE_ASSERTION = false;
-    
+    private static final Integer STUDENT_LOANS_COUNT = 5;
+    private static final Integer EXPECTED_STUDENT_LOANS_COUNT = 5;
     @Mock
     private StudentRepository studentRepository;
     @Mock
@@ -98,6 +100,22 @@ public class StudentServiceImplTest {
         
         // Act & Assert
         assertThrows(EntitySyntaxException.class, () -> serviceToTest.createStudent(studentDTO));
+    }
+    
+    @Test
+    void testNullStatus() {
+        // Arrange
+        StudentDTO studentDTO = new StudentDTO(VALID_ID, VALID_FIRST_NAME, VALID_LAST_NAME, VALID_BIRTH_DATE, VALID_DEGREE, NULL_STATUS, VALID_EMAIL);
+        when(studentRepository.findById(studentDTO.getId()))
+                .thenReturn(Optional.empty());
+        when(toolsService.isValidEmail(studentDTO.getEmail()))
+                .thenReturn(TRUE_ASSERTION);
+        when(toolsService.isValidDateFormat(studentDTO.getBirthDate()))
+                .thenReturn(TRUE_ASSERTION);
+        
+        // Act & Assert
+        assertThrows(EntitySyntaxException.class, () -> serviceToTest.createStudent(studentDTO));
+        
     }
     
     @Test
@@ -181,5 +199,63 @@ public class StudentServiceImplTest {
         
         // Act & Assert
         assertTrue(student.isEmpty());
+    }
+    
+    @Test
+    void testGetOneStudentById() throws EntityNotFoundException {
+        // Arrange
+        Student student = new Student();
+        student.setId(VALID_ID);
+        when(studentRepository.findById(VALID_ID))
+                .thenReturn(Optional.of(student));
+        
+        // Act
+        Student studentToFind = serviceToTest.getOneStudentById(VALID_ID);
+    
+        // Assert
+        assertNotNull(studentToFind);
+    }
+    
+    @Test
+    void testGetOneStudentByIdNotFound() {
+        // Arrange
+        Student student = new Student();
+        student.setId(VALID_ID);
+        when(studentRepository.findById(VALID_ID))
+                .thenReturn(Optional.empty());
+        
+        // Act & Assert
+        assertThrows(EntityNotFoundException.class,
+                () -> serviceToTest.getOneStudentById(VALID_ID));
+    }
+    
+    @Test
+    void testGetStudentLoansCount() throws EntityNotFoundException {
+        // Arrange
+        Student student = new Student();
+        student.setId(VALID_ID);
+        when(studentRepository.findById(VALID_ID))
+                .thenReturn(Optional.of(student));
+        when(studentRepository.countBookLoansByStudentWithStatus(student.getId()))
+                .thenReturn(STUDENT_LOANS_COUNT);
+        
+        // Act
+        Integer studentLoansCount = serviceToTest.getStudentLoansCount(VALID_ID);
+    
+        // Assert
+        assertEquals(studentLoansCount, EXPECTED_STUDENT_LOANS_COUNT);
+    }
+    
+    @Test
+    void testGetStudentLoansCountNotFount() {
+        // Arrange
+        Student student = new Student();
+        student.setId(VALID_ID);
+        when(studentRepository.findById(VALID_ID))
+                .thenReturn(Optional.empty());
+        
+        // Act & Assert
+        assertThrows(EntityNotFoundException.class,
+                () -> serviceToTest.getStudentLoansCount(VALID_ID));
     }
 }

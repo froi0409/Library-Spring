@@ -1,20 +1,20 @@
+-- script.sql
+
 create database library
     with owner postgres;
 
-create type public.user_role as enum ('LIBRARIAN', 'STUDENT', 'ADMINISTRATOR');
+\c library
 
+create type public.user_role as enum ('LIBRARIAN', 'STUDENT', 'ADMINISTRATOR');
 alter type public.user_role owner to postgres;
 
 create type public.student_status as enum ('ACTIVE', 'INACTIVE');
-
 alter type public.student_status owner to postgres;
 
 create type public.book_reservation_status as enum ('SERVED', 'NO_SERVED');
-
 alter type public.book_reservation_status owner to postgres;
 
 create type public.book_loan_status as enum ('IN_TIME', 'OUT_OF_TIME', 'RETURNED_IN_TIME', 'RETURNED_OUT_OF_TIME');
-
 alter type public.book_loan_status owner to postgres;
 
 create table public.degree
@@ -24,9 +24,7 @@ create table public.degree
             primary key,
     name varchar(100) not null
 );
-
-alter table public.degree
-    owner to postgres;
+alter table public.degree owner to postgres;
 
 create table public.book
 (
@@ -40,9 +38,7 @@ create table public.book
     cost         numeric(8, 2) default 100.00 not null,
     stock        integer                      not null
 );
-
-alter table public.book
-    owner to postgres;
+alter table public.book owner to postgres;
 
 create table public.student
 (
@@ -58,9 +54,7 @@ create table public.student
     status     varchar(50) default 'ACTIVE'::character varying,
     email      varchar(200)
 );
-
-alter table public.student
-    owner to postgres;
+alter table public.student owner to postgres;
 
 create table public.book_loan
 (
@@ -79,9 +73,7 @@ create table public.book_loan
     returned_date date,
     status        varchar(50) default 'IN_TIME'::character varying not null
 );
-
-alter table public.book_loan
-    owner to postgres;
+alter table public.book_loan owner to postgres;
 
 create table public."user"
 (
@@ -95,9 +87,7 @@ create table public."user"
             references public.student,
     token_expiration timestamp
 );
-
-alter table public."user"
-    owner to postgres;
+alter table public."user" owner to postgres;
 
 create table public.reservation
 (
@@ -114,7 +104,4 @@ create table public.reservation
     reservation_date      date        default now()                          not null,
     reservation_validated date
 );
-
-alter table public.reservation
-    owner to postgres;
-
+alter table public.reservation owner to postgres;

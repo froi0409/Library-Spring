@@ -22,11 +22,18 @@ import org.springframework.test.web.servlet.ResultActions;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
+import static org.springframework.test.web.client.match.MockRestRequestMatchers.jsonPath;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @ContextConfiguration(classes = {BookController.class, BookService.class, GlobalExceptionHandler.class})
 class BookControllerTest extends AbstractMvcTest {
+    
+    private static final String BOOK_CODE = "123456";
+    private static final String BOOK_TITLE = "Title";
+    private static final String BOOK_AUTHOR = "Author";
+    private static final String BOOK_PUBLISHER = "Publisher";
     
     @MockBean
     private BookService bookService;
@@ -47,5 +54,24 @@ class BookControllerTest extends AbstractMvcTest {
                         .content(objectMapper.writeValueAsString(newBookRequest))
                 )
                 .andExpect(status().isCreated());
+    }
+    
+    @Test
+    @WithMockUser(username = "librarian1", roles = {"LIBRARIAN"})
+    void testFindBookByCode() throws Exception {
+        // Arrange
+        ObjectMapper objectMapper = new ObjectMapper();
+        Book book = new Book();
+        book.setCode(BOOK_CODE);
+        book.setTitle(BOOK_TITLE);
+        book.setAuthor(BOOK_AUTHOR);
+        book.setPublisher(BOOK_PUBLISHER);
+        
+        when(bookService.getOneBookByCode(BOOK_CODE)).thenReturn(book);
+        
+        // Act & Assert
+        mockMvc.perform(get("/v1/book/{bookCode}", BOOK_CODE)
+                        .with(csrf()))
+                .andExpect(status().isOk());
     }
 }

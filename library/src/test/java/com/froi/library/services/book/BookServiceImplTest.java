@@ -3,6 +3,7 @@ package com.froi.library.services.book;
 import com.froi.library.dto.book.CreateBookRequestDTO;
 import com.froi.library.entities.Book;
 import com.froi.library.exceptions.DuplicatedEntityException;
+import com.froi.library.exceptions.EntityNotFoundException;
 import com.froi.library.exceptions.EntitySyntaxException;
 import com.froi.library.repositories.BookRepository;
 import com.froi.library.services.tools.ToolsService;
@@ -148,6 +149,34 @@ public class BookServiceImplTest {
         
         // Assert
         assertTrue(result.isEmpty());
+    }
+    
+    @Test
+    void testGetOneBookByCode() throws EntityNotFoundException {
+        // Arrange
+        Book book = new Book();
+        book.setCode(CODE);
+        when(bookRepository.findById(CODE))
+                .thenReturn(Optional.of(book));
+        
+        // Act
+        Book bookTest = serviceToTest.getOneBookByCode(CODE);
+        
+        // Assert
+        assertNotNull(bookTest);
+        assertEquals(book.getCode(), CODE);
+        
+    }
+    
+    @Test
+    void testGetOneBookByCodeNotFound() {
+        // Arrange
+        when(bookRepository.findById(CODE))
+                .thenReturn(Optional.empty());
+        
+        // Act & Assert
+        assertThrows(EntityNotFoundException.class,
+                () -> serviceToTest.getOneBookByCode(CODE));
     }
     
 }

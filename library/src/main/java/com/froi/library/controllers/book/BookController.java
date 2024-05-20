@@ -3,6 +3,7 @@ package com.froi.library.controllers.book;
 import com.froi.library.dto.book.CreateBookRequestDTO;
 import com.froi.library.entities.Book;
 import com.froi.library.exceptions.DuplicatedEntityException;
+import com.froi.library.exceptions.EntityNotFoundException;
 import com.froi.library.exceptions.EntitySyntaxException;
 import com.froi.library.services.book.BookService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +15,6 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/v1/book")
 public class BookController {
-
     private BookService bookService;
     
     @Autowired
@@ -32,7 +32,7 @@ public class BookController {
     
     @GetMapping(path = "/{bookCode}")
     @PreAuthorize("hasRole('LIBRARIAN')")
-    public ResponseEntity<Book> findBookByCode(@PathVariable String bookCode) {
+    public ResponseEntity<Book> findBookByCode(@PathVariable String bookCode) throws EntityNotFoundException {
         return ResponseEntity
                 .ok(bookService.getOneBookByCode(bookCode));
     }
