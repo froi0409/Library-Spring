@@ -13,4 +13,5 @@ public interface BookService {
     
     public Optional<Book> getBookByCode(String bookCode);
     
+    Book getOneBookByCode(String bookCode);
 }

@@ -6,11 +6,11 @@ import com.froi.library.exceptions.DuplicatedEntityException;
 import com.froi.library.exceptions.EntitySyntaxException;
 import com.froi.library.repositories.BookRepository;
 import com.froi.library.services.tools.ToolsService;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.sql.Date;
-import java.text.SimpleDateFormat;
 import java.util.Optional;
 
 @Service
@@ -60,8 +60,15 @@ public class BookServiceImpl implements BookService {
         return bookEntity;
     }
     
+    @Override
     public Optional<Book> getBookByCode(String bookCode) {
         return bookRepository.findById(bookCode);
+    }
+    
+    @Override
+    public Book getOneBookByCode(String bookCode) {
+        return bookRepository.findById(bookCode)
+                .orElseThrow(() -> new EntityNotFoundException("BOOK_NOT_FOUND"));
     }
     
 }

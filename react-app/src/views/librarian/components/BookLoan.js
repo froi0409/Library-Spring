@@ -1,17 +1,26 @@
-import { Card, CardHeader, CardContent, Grid, Button, TextField, InputAdornment } from '@mui/material';
+import { Card, CardHeader, CardContent, Grid, Button, TextField, InputAdornment, Alert } from '@mui/material';
 import { BookOutlined, BadgeOutlined } from '@mui/icons-material';
 import { useState, useEffect } from 'react';
-import axios from 'axios'; // Asegúrate de importar axios
-import { useCookies } from 'react-cookie'; // Importar useCookies
+import axios from 'axios';
+import { useCookies } from 'react-cookie';
+import BooksOrderTable from './BooksOrderTable';
+import { number } from 'prop-types';
 
 export const API_URL = process.env.REACT_APP_URL_BACKEND;
 
 const BookLoan = () => {
     const [validStudent, setValidStudent] = useState(false);
+    const [findSubmitted, setFindSubmitted] = useState(false);
+    const [submitted, setSubmitted] = useState(false);
     const [studentId, setStudentId] = useState('');
     const [findBookCode, setFindBookCode] = useState('');
-    const [studentFound, setStudentFound] = useState(null); // Nuevo estado para manejar la respuesta de la API
+    const [studentFound, setStudentFound] = useState(null);
+    const [messageType, setMessageType] = useState('');
+    const [findMessageType, setFindMessageType] = useState('OK');
+    const [booksList, setBooksList] = useState([]);
+    const [response, setResponse] = useState('');
     const [cookies] = useCookies(['jwt']);
+    const [maxBooks, setMaxBooks] = useState(3); // Estado para el número máximo de libros permitidos
 
     useEffect(() => {
         const timeoutId = setTimeout(() => {
@@ -25,6 +34,19 @@ const BookLoan = () => {
                     if (response.status === 200) {
                         setStudentFound(true);
                         setValidStudent(true);
+                        axios.get(`${API_URL}/v1/student/loanCount/${studentId}`, {
+                            headers: {
+                                'Authorization': cookies.jwt,
+                            }
+                        })
+                        .then(responseLoanCount => {
+                            if (responseLoanCount.status === 200) {
+                                console.log(responseLoanCount.data)
+                                if (responseLoanCount.data !== undefined || response.data !== '') {
+                                    setMaxBooks(Number(responseLoanCount.data));
+                                }
+                            }
+                        })
                     } else {
                         setStudentFound(false);
                         setValidStudent(false);
@@ -42,14 +64,83 @@ const BookLoan = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-    }
+        setSubmitted(true);
+        setMessageType('OK');
+        setResponse('Préstamo creado exitosamente');
+    };
 
-    const handleSearch = (e) => {
+    const updateBookInformation = async () => {
+        try {
+            const res = await axios.get(`${API_URL}/v1/book/${findBookCode}`, {
+                headers: {
+                    'Authorization': cookies.jwt,
+                }
+            });
+            if (res.status === 200) {
+                setFindMessageType('OK');
+                const bookData = {
+                    code: res.data.code,
+                    title: res.data.title,
+                    publisher: res.data.publisher,
+                    author: res.data.author,
+                };
+                setBooksList(prevBooksList => {
+                    if (prevBooksList.length < maxBooks) {
+                        return [...prevBooksList, bookData];
+                    } else {
+                        setFindMessageType('ERR');
+                        setResponse(`Solo se pueden agregar ${maxBooks} libros.`);
+                        return prevBooksList;
+                    }
+                });
+                setFindBookCode('');
+            }
+        } catch (error) {
+            setFindMessageType('ERR');
+            setResponse('Error al actualizar la información del libro');
+        }
+    };
+
+    const handleSearch = async (e) => {
         e.preventDefault();
-    }
+        setFindSubmitted(true);
+        try {
+            const res = await axios.get(`${API_URL}/v1/bookloan/availability/${findBookCode}`, {
+                headers: {
+                    'Authorization': cookies.jwt,
+                },
+            });
+            if (res.status === 200) {
+                if (res.data === "") {
+                    setFindMessageType('ERR');
+                    setResponse(`No Existe el libro ${findBookCode}, o no hay copias suficientes`);
+                } else if (res.data > 0) {
+                    updateBookInformation();
+                } else {
+                    setFindMessageType('ERR');
+                    setResponse(`No hay copias suficientes de ${findBookCode}`);
+                }
+            } else {
+                setFindMessageType('ERR');
+                setResponse(`No hay copias suficientes de ${findBookCode}`);
+            }
+        } catch (error) {
+            setFindSubmitted(true);
+            setFindMessageType('ERR');
+            setResponse('No se encontró el libro');
+        } 
+    };
 
     return (
         <Card>
+            <Grid>
+                {findSubmitted && response !== '' && (
+                    <Alert severity={findMessageType === 'ERR' ? "error" : "success"}>{response}</Alert>
+                )}
+                {submitted && response !== '' && (
+                    <Alert severity={messageType === 'OK' ? "success" : "error"}>{response}</Alert>
+                )}
+            </Grid>
             <CardHeader title='Prestamo de Libro' titleTypographyProps={{ variant: 'h6' }} />
             <CardContent sx={{ alignItems: 'center', justifyContent: 'center' }}>
                 <form onSubmit={handleSubmit}>
@@ -101,6 +192,9 @@ const BookLoan = () => {
                             </Grid>
                         </Grid>
                         <Grid item xs={12}>
+                            <BooksOrderTable booksList={booksList} />
+                        </Grid>
+                        <Grid item xs={12}>
                             <Grid container spacing={5}>
                                 <Grid item xs={2}>
                                     <Button type='submit' variant='contained' size='large' fullWidth>
@@ -108,7 +202,7 @@ const BookLoan = () => {
                                     </Button>
                                 </Grid>
                                 <Grid item xs={10}>
-                                    
+                                    {/* Aquí puedes agregar más contenido si es necesario */}
                                 </Grid>
                             </Grid>
                         </Grid>
@@ -116,7 +210,7 @@ const BookLoan = () => {
                 </form>
             </CardContent>
         </Card>
-    )
+    );
 }
 
 export default BookLoan;

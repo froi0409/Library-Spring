@@ -14,7 +14,7 @@
 	<name>library</name>
 	<description>Proyecto 2 - Análisis y Diseño de Sistemas 2 / USAC / CUNOC</description>
 	<properties>
-		<java.version>21</java.version>
+		<java.version>17</java.version>
 	</properties>
 	<dependencies>
 		<dependency>

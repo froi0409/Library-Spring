@@ -14,4 +14,6 @@ public interface StudentService {
     Optional<Student> getStudentById(String id) throws EntityNotFoundException;
     
     Student getOneStudentById(String id) throws EntityNotFoundException;
+    
+    Integer getStudentLoansCount(String studentId) throws EntityNotFoundException;
 }
