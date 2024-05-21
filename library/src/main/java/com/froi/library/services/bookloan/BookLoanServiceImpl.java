@@ -203,7 +203,7 @@ public class BookLoanServiceImpl implements BookLoanService {
         
         if (daysBetween > 30) {
             Book book = bookService.getOneBookByCode(bookLoan.getBook());
-            delayTotal = (daysBetween - 30) * 15.0 + book.getCost();
+            delayTotal = ((daysBetween - 3) * 15.0) + ((daysBetween - 30) * 15.0) + book.getCost();
             studentService.sanctionStudent(bookLoan.getStudent());
         } else if (daysBetween > 3) {
             delayTotal = (daysBetween - 3) * 15.0;

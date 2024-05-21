@@ -9,6 +9,7 @@ import Paper from '@mui/material/Paper';
 import Button from '@mui/material/Button';
 import { Card, Grid, CardHeader, CardContent, TextField, InputAdornment } from '@mui/material';
 import { BadgeOutlined } from '@mui/icons-material';
+import ZoomInIcon from '@mui/icons-material/ZoomIn';
 
 import { useCookies } from 'react-cookie';
 import { useState, useEffect } from 'react';
@@ -68,7 +69,7 @@ export default function StudentBookLoansTable() {
     }, 1000);
 
     return () => clearTimeout(timeoutId);
-  }, [studentId]);
+  }, [studentId, date]);
 
   const handleReturnBook = async (loanId) => {
     setValidLoan(true);
@@ -132,7 +133,7 @@ export default function StudentBookLoansTable() {
                       <TableCell align="right">Fecha de Prestamo</TableCell>
                       <TableCell align="right">Total Prestamo</TableCell>
                       <TableCell align="right">Total Mora</TableCell>
-                      <TableCell align="right">Devolver</TableCell>
+                      <TableCell align="right"></TableCell>
                     </TableRow>
                   </TableHead>
                   <TableBody>
@@ -145,7 +146,7 @@ export default function StudentBookLoansTable() {
                         <TableCell align="right">{bookLoan.delayTotal}</TableCell>
                         <TableCell align="right">
                           <Button variant="contained" color="secondary" onClick={() => handleReturnBook(bookLoan.id)}>
-                            Devolver
+                            <ZoomInIcon />
                           </Button>
                         </TableCell>
                       </TableRow>

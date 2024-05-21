@@ -7,7 +7,7 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import Button from '@mui/material/Button';
-import { Card, Grid, CardHeader, CardContent, TextField, InputAdornment } from '@mui/material';
+import { Card, Grid, CardHeader, CardContent, TextField, InputAdornment, Alert } from '@mui/material';
 import { BadgeOutlined } from '@mui/icons-material';
 
 import { useCookies } from 'react-cookie';
@@ -23,7 +23,41 @@ const ReturnBook = ({ loanId, returnDate }) => {
     const [loanDate, setLoanDate] = useState('');
     const [loanTotal, setLoanTotal] = useState('');
     const [delayTotal, setDelayTotal] = useState('');    
+
     const [cookies] = useCookies(['jwt']);
+    const [submitted, setSubmitted] = useState(false);
+    const [severity, setSeverity] = useState('error');
+    const [alertMessage, setAlertMessage] = useState('');
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+
+        try {
+            const formData = {
+                loanId: loanId,
+                returnDate: returnDate
+            }
+
+            const response = await axios.post(`${API_URL}/v1/bookloan/return`, formData, {
+                headers: {
+                    Authorization: cookies.jwt
+                }
+            });
+            setSubmitted(true);
+            
+            if (response.status === 200) {
+                setSeverity('success')
+                setAlertMessage('Libro retornado con éxito');
+            } else {
+                setSeverity('error');
+                setAlertMessage('Ocurrió un error al retornar el libro');
+            }
+        } catch (error) {
+            setSubmitted(true);
+            setSeverity('error');
+            setAlertMessage(`Ocurrió un error al retornar el libro: ${error.response.data}`);
+        }    
+    }
 
     useEffect(() => {
         const fetchData = async () => {
@@ -55,6 +89,12 @@ const ReturnBook = ({ loanId, returnDate }) => {
 
     return (
         <Card>
+            {submitted && (
+                <Alert severity={severity}>
+                    {alertMessage}
+                </Alert>
+            )
+            }
             <CardHeader title='Información del Prestamo' titleTypographyProps={{ variant: 'h6' }} />
             <CardContent sx={{ alignItems: 'center', justifyContent: 'center' }}>
                 <Grid container spacing={5}>
@@ -90,6 +130,11 @@ const ReturnBook = ({ loanId, returnDate }) => {
                                 </TableBody>
                             </Table>
                         </TableContainer>
+                    </Grid>
+                    <Grid item xs={12}>
+                        <Button onClick={handleSubmit} type="submit" variant="contained" size="large" fullWidth>
+                            Retornar Libro
+                        </Button>
                     </Grid>
                 </Grid>
             </CardContent>
