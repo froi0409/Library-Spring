@@ -104,7 +104,21 @@ export default function StudentBookLoansTable() {
                   />
                 </Grid>
                 <Grid item xs={6}>
-
+                  <TextField
+                    fullWidth
+                    label='Fecha de Devolución'
+                    type="date"
+                    required
+                    value={date}
+                    onChange={(e) => setDate(e.target.value)}
+                    InputProps={{
+                      startAdornment: (
+                        <InputAdornment position='start'>
+                          <BadgeOutlined />
+                        </InputAdornment>
+                      )
+                    }}
+                  />
                 </Grid>
               </Grid>
             </Grid>
