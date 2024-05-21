@@ -4,6 +4,7 @@ import com.froi.library.dto.EnableStudentDTO;
 import com.froi.library.dto.user.StudentDTO;
 import com.froi.library.entities.Student;
 import com.froi.library.enums.studentstatus.StudentStatus;
+import com.froi.library.exceptions.DenegatedActionException;
 import com.froi.library.exceptions.DuplicatedEntityException;
 import com.froi.library.exceptions.EntityNotFoundException;
 import com.froi.library.exceptions.EntitySyntaxException;
@@ -13,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.sql.Date;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -92,7 +94,24 @@ public class StudentServiceImpl implements StudentService {
     }
     
     @Override
-    public boolean enableStudent(EnableStudentDTO enableStudent) {
+    public boolean enableStudent(EnableStudentDTO enableStudent) throws EntityNotFoundException, EntitySyntaxException, DenegatedActionException {
+        if (!toolsService.isValidDateFormat(enableStudent.getEnableDate())) {
+            throw new EntitySyntaxException("INVALID_DATE");
+        }
+        Student student = studentRepository.findById(enableStudent.getStudentId())
+                .orElseThrow(() -> new EntityNotFoundException("STUDENT_NOT_FOUND"));
+        
+        Integer invalidLoans = studentRepository.countInvalidLoans(student.getId(), Date.valueOf(enableStudent.getEnableDate()));
+        if (invalidLoans == 0) {
+            student.setStatus(StudentStatus.ACTIVE);
+        } else {
+            throw new DenegatedActionException("STUDENT_HAS_INVALID_LOANS");
+        }
         return true;
+    }
+    
+    @Override
+    public List<Student> findAllInactiveStudents() {
+        return studentRepository.findAllByStatus(StudentStatus.INACTIVE);
     }
 }

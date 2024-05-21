@@ -3,10 +3,12 @@ package com.froi.library.services.student;
 import com.froi.library.dto.EnableStudentDTO;
 import com.froi.library.dto.user.StudentDTO;
 import com.froi.library.entities.Student;
+import com.froi.library.exceptions.DenegatedActionException;
 import com.froi.library.exceptions.DuplicatedEntityException;
 import com.froi.library.exceptions.EntityNotFoundException;
 import com.froi.library.exceptions.EntitySyntaxException;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface StudentService {
@@ -20,5 +22,7 @@ public interface StudentService {
     
     boolean sanctionStudent(String studentId) throws EntityNotFoundException;
     
-    boolean enableStudent(EnableStudentDTO enableStudent);
+    boolean enableStudent(EnableStudentDTO enableStudent) throws EntityNotFoundException, EntitySyntaxException, DenegatedActionException;
+    
+    List<Student> findAllInactiveStudents();
 }

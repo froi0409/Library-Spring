@@ -1,16 +1,18 @@
 package com.froi.library.controllers.student;
 
+import com.froi.library.dto.EnableStudentDTO;
 import com.froi.library.entities.Student;
+import com.froi.library.exceptions.DenegatedActionException;
 import com.froi.library.exceptions.EntityNotFoundException;
+import com.froi.library.exceptions.EntitySyntaxException;
 import com.froi.library.services.student.StudentService;
+import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -35,5 +37,17 @@ public class StudentController {
     public ResponseEntity<Integer> getStudentLoansCount(@PathVariable String studentId) throws EntityNotFoundException {
         return ResponseEntity
                 .ok(studentService.getStudentLoansCount(studentId));
+    }
+    
+    @PostMapping("/enableStudent")
+    public ResponseEntity<Boolean> enableStudent(@RequestBody EnableStudentDTO enableStudent) throws DenegatedActionException, EntityNotFoundException, EntitySyntaxException {
+        return ResponseEntity
+                .ok(studentService.enableStudent(enableStudent));
+    }
+    
+    @GetMapping(path = "/allInactive")
+    public ResponseEntity<List<Student>> getAllInactive() {
+        return ResponseEntity
+                .ok(studentService.findAllInactiveStudents());
     }
 }
