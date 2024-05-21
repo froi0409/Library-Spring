@@ -2,7 +2,7 @@
 FROM postgres:16.1
 
 # Establece las variables de entorno necesarias para PostgreSQL
-ENV POSTGRES_DB=postgres
+ENV POSTGRES_DB=library
 ENV POSTGRES_USER=postgres
 ENV POSTGRES_PASSWORD=postgres
 
