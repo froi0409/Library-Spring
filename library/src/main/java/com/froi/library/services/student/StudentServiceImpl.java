@@ -104,6 +104,7 @@ public class StudentServiceImpl implements StudentService {
         Integer invalidLoans = studentRepository.countInvalidLoans(student.getId(), Date.valueOf(enableStudent.getEnableDate()));
         if (invalidLoans == 0) {
             student.setStatus(StudentStatus.ACTIVE);
+            studentRepository.save(student);
         } else {
             throw new DenegatedActionException("STUDENT_HAS_INVALID_LOANS");
         }

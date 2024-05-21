@@ -6,6 +6,7 @@ import BookLoan from 'src/views/librarian/components/BookLoan';
 import BookListTable from 'src/views/book/BooksListTable';
 import StudentLayout from 'src/layouts/user/StudentLayout';
 import StudentBookLoansTable from 'src/views/librarian/components/StudentBookLoansTable';
+import InactiveStudentsTable from 'src/views/librarian/components/InactiveSudentsTable';
 
 /* ***Layouts**** */
 const FullLayout = Loadable(lazy(() => import('../layouts/full/FullLayout')));
@@ -35,7 +36,8 @@ const Router = [
       { path: '*', element: <Navigate to="/auth/404" /> },
       { path: '/book-loan', element: <BookLoan /> },
       { path: '/all-books', element: <BookListTable /> },
-      { path: '/student-loans', element: <StudentBookLoansTable /> }
+      { path: '/student-loans', element: <StudentBookLoansTable /> },
+      { path: '/all-inactive-students', element: <InactiveStudentsTable /> }
     ],
   },
   {

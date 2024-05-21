@@ -20,35 +20,47 @@ export const API_URL = process.env.REACT_APP_URL_BACKEND;
 
 export default function InactiveStudentsTable() {
   
-  const [studentId, setStudentId] = useState('');
-  const [booksLoanList, setBooksLoanList] = useState([]);
   const [cookies] = useCookies(['jwt']);
-  
-  useEffect(() => {
-    const timeoutId = setTimeout(() => {
-      if (studentId) {
-        axios
-          .get(`${API_URL}/v1/student/allInactive`, {
-            headers: {
-              Authorization: cookies.jwt,
-            },
-          })
-          .then((response) => {
-            
-          })
-          .catch((error) => {
-            
-          });
+  const [inactiveUsersList, setInactiveUsersList] = useState([]);
+
+  const handleEnableStudent = async (studentId) => {
+    try {
+      const formData = {  
+        studentId: studentId,
+        enableDate: '2024-05-22'
       }
-    }, 1000);
+      const response = await axios.post(`${API_URL}/v1/student/enableStudent`, formData, {
+        headers: {
+          Authorization: cookies.jwt
+        }
+      });
 
-    return () => clearTimeout(timeoutId);
-  }, [studentId, date]);
-
-  const handleReturnBook = async (loanId) => {
-    setValidLoan(true);
-    setLoanId(loanId);
+      if (response.status === 200) {
+        console.log('se actualizó con éxito')
+        
+      }
+    } catch (error) {
+      console.error(error)
+    }
   }
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get(`${API_URL}/v1/student/allInactive`, {
+          headers: {
+            Authorization: cookies.jwt
+          }
+        });
+        if (response.status === 200) {
+          setInactiveUsersList(response.data);
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    }
+    fetchData();
+  }, []);
 
   return (
     <>
@@ -69,14 +81,14 @@ export default function InactiveStudentsTable() {
                     </TableRow>
                   </TableHead>
                   <TableBody>
-                    {booksLoanList.map((student) => (
+                    {inactiveUsersList.map((student) => (
                       <TableRow key={student.id} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
                         <TableCell component="th" scope="row">{student.id}</TableCell>
                         <TableCell align="right">{student.firstName}</TableCell>
                         <TableCell align="right">{student.lastName}</TableCell>
                         <TableCell align="right">{student.email}</TableCell>
                         <TableCell align="right">
-                          <Button variant="contained" color="secondary" onClick={() => handleReturnBook(student.id)}>
+                          <Button type="submit" variant="contained" color="secondary" onClick={() => handleEnableStudent(student.id)}>
                             <CheckIcon />
                           </Button>
                         </TableCell>
@@ -89,14 +101,7 @@ export default function InactiveStudentsTable() {
           </Grid>
         </CardContent>
       </Card>
-      {validLoan && (
-        <Grid container spacing={5} mt={2}>
-          <Grid item xs={12}>
-            <ReturnBook loanId={loanId} returnDate={date} />
-          </Grid>
-        </Grid>
-      )
-      }
+      
     </>
   );
 }

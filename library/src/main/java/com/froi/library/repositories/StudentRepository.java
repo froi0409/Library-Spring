@@ -19,10 +19,12 @@ public interface StudentRepository extends JpaRepository<Student, String> {
     int countBookLoansByStudentWithStatus(@Param("studentId") String studentId);
     
     @Query(value = "SELECT COUNT(*) FROM book_loan " +
-            "WHERE student_id = :studentId " +
+            "WHERE student = :studentId " +
             "AND status IN ('IN_TIME', 'OUT_OF_TIME') " +
-            "AND DATEDIFF(:checkDate, loan_date) <= 30", nativeQuery = true)
+            "AND EXTRACT(DAY FROM age(:checkDate, loan_date)) >= 30", nativeQuery = true)
     Integer countInvalidLoans(@Param("studentId") String studentId, @Param("checkDate") Date checkDate);
-
+    
+    
+    
     List<Student> findAllByStatus(StudentStatus status);
 }
