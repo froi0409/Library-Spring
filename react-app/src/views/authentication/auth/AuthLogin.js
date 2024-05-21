@@ -50,7 +50,7 @@ const AuthLogin = ({ title, subtitle, subtext }) => {
                 setCookie('jwt', `Bearer ${token}`);
                 
                 if (role === 'LIBRARIAN') {
-                    navigate('/dashboard');
+                    navigate('/all-books');
                 } else if (role === 'STUDENT') {
                     navigate('/student/dashboard');
                 }

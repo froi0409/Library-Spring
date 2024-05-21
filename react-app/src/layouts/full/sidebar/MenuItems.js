@@ -1,5 +1,5 @@
 import {
-  IconAddressBook, IconAperture, IconCopy, IconLayoutDashboard, IconLogin, IconMoodHappy, IconTypography, IconUserPlus, IconBook
+  IconBookOff, IconArrowsDiff, IconAddressBook, IconAperture, IconCopy, IconLayoutDashboard, IconLogin, IconMoodHappy, IconTypography, IconUserPlus, IconBook
 } from '@tabler/icons';
 
 import { uniqueId } from 'lodash';
@@ -7,62 +7,13 @@ import { uniqueId } from 'lodash';
 const Menuitems = [
   {
     navlabel: true,
-    subheader: 'Home',
-  },
-
-  {
-    id: uniqueId(),
-    title: 'Dashboard',
-    icon: IconLayoutDashboard,
-    href: '/dashboard',
-  },
-  {
-    navlabel: true,
-    subheader: 'Utilities',
+    subheader: 'Libros'
   },
   {
     id: uniqueId(),
-    title: 'Typography',
-    icon: IconTypography,
-    href: '/ui/typography',
-  },
-  {
-    id: uniqueId(),
-    title: 'Shadow',
-    icon: IconCopy,
-    href: '/ui/shadow',
-  },
-  {
-    navlabel: true,
-    subheader: 'Auth',
-  },
-  {
-    id: uniqueId(),
-    title: 'Login',
-    icon: IconLogin,
-    href: '/auth/login',
-  },
-  {
-    id: uniqueId(),
-    title: 'Register',
-    icon: IconUserPlus,
-    href: '/auth/register',
-  },
-  {
-    navlabel: true,
-    subheader: 'Extra',
-  },
-  {
-    id: uniqueId(),
-    title: 'Icons',
-    icon: IconMoodHappy,
-    href: '/icons',
-  },
-  {
-    id: uniqueId(),
-    title: 'Sample Page',
-    icon: IconAperture,
-    href: '/sample-page',
+    title: 'Listar Libros',
+    icon: IconBook,
+    href: '/all-books'
   },
   {
     navlabel: true,
@@ -71,7 +22,7 @@ const Menuitems = [
   {
     id: uniqueId(),
     title: 'Realizar Prestamo',
-    icon: IconBook,
+    icon: IconArrowsDiff,
     href: '/book-loan'
   },
   {
@@ -82,13 +33,13 @@ const Menuitems = [
   },
   {
     navlabel: true,
-    subheader: 'Libros'
+    subheader: 'Estudiantes'
   },
   {
     id: uniqueId(),
-    title: 'Listar Libros',
-    icon: IconBook,
-    href: '/all-books'
+    title: 'Estudiantes Sancionados',
+    icon: IconBookOff,
+    href: '/all-inactive-students'
   }
 ];
 

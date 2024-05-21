@@ -6,13 +6,13 @@ import { useCookies } from 'react-cookie';
 import { Card, CardHeader, CardContent } from '@mui/material';
 
 const columns = [
-  { field: 'code', headerName: 'Code', width: 150 },
-  { field: 'title', headerName: 'Title', width: 200 },
-  { field: 'publisher', headerName: 'Publisher', width: 150 },
-  { field: 'author', headerName: 'Author', width: 150 },
+  { field: 'code', headerName: 'Código', width: 150 },
+  { field: 'title', headerName: 'Titulo', width: 200 },
+  { field: 'publisher', headerName: 'Editorial', width: 150 },
+  { field: 'author', headerName: 'Autor', width: 150 },
   {
     field: 'loan_count',
-    headerName: 'Loan Count',
+    headerName: 'Disponibles',
     type: 'number',
     width: 120,
   },

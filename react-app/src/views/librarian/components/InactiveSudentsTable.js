@@ -37,6 +37,7 @@ export default function InactiveStudentsTable() {
 
       if (response.status === 200) {
         console.log('se actualizó con éxito')
+        window.location.reload();
         
       }
     } catch (error) {
@@ -54,6 +55,7 @@ export default function InactiveStudentsTable() {
         });
         if (response.status === 200) {
           setInactiveUsersList(response.data);
+          
         }
       } catch (error) {
         console.error(error);
