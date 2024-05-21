@@ -1,5 +1,7 @@
 -- script.sql
 
+drop database library;
+
 create database library
     with owner postgres;
 
