@@ -1,10 +1,5 @@
 -- script.sql
 
-drop database if exists library;
-
-create database library
-    with owner postgres;
-
 \c library
 
 create type public.user_role as enum ('LIBRARIAN', 'STUDENT', 'ADMINISTRATOR');
