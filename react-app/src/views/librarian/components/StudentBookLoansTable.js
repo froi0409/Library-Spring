@@ -9,6 +9,7 @@ import Paper from '@mui/material/Paper';
 import Button from '@mui/material/Button';
 import { Card, Grid, CardHeader, CardContent, TextField, InputAdornment } from '@mui/material';
 import { BadgeOutlined } from '@mui/icons-material';
+import CalendarMonthOutlinedIcon from '@mui/icons-material/CalendarMonthOutlined';
 import ZoomInIcon from '@mui/icons-material/ZoomIn';
 
 import { useCookies } from 'react-cookie';
@@ -115,7 +116,7 @@ export default function StudentBookLoansTable() {
                     InputProps={{
                       startAdornment: (
                         <InputAdornment position='start'>
-                          <BadgeOutlined />
+                          <CalendarMonthOutlinedIcon />
                         </InputAdornment>
                       )
                     }}

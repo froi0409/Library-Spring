@@ -9,8 +9,8 @@ import com.froi.library.exceptions.EntitySyntaxException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
-import java.sql.Date;
 import java.util.List;
+import java.util.Map;
 
 public interface BookLoanService {
     boolean createLoan(CreateBookLoanDTO newLoan) throws EntityNotFoundException, DenegatedActionException, EntitySyntaxException;
@@ -24,4 +24,8 @@ public interface BookLoanService {
     List<BookLoan> findNoReturnedByStudent(String studentId, String dateProvided) throws EntityNotFoundException;
     
     BookLoan findById(String loanId, String returnDate) throws EntitySyntaxException, EntityNotFoundException;
+    
+    List<Map<String, Object>> findBookLoansDueToday(String date) throws EntitySyntaxException;
+    
+    List<Map<String, Object>> findOverdueBookLoans(String date) throws EntitySyntaxException;
 }

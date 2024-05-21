@@ -4,7 +4,6 @@ import com.froi.library.dto.bookloan.CreateBookLoanDTO;
 import com.froi.library.dto.bookloan.ReturnLoanDTO;
 import com.froi.library.entities.Book;
 import com.froi.library.entities.BookLoan;
-import com.froi.library.entities.Reservation;
 import com.froi.library.entities.Student;
 import com.froi.library.enums.bookstatus.BookLoanStatus;
 import com.froi.library.enums.studentstatus.StudentStatus;
@@ -26,7 +25,7 @@ import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 @Service
@@ -214,4 +213,23 @@ public class BookLoanServiceImpl implements BookLoanService {
         bookLoanRepository.save(bookLoan);
         return true;
     }
+    
+    
+    @Override
+    public List<Map<String, Object>> findBookLoansDueToday(String date) throws EntitySyntaxException {
+        if (date != null && !toolsService.isValidDateFormat(date)) {
+            throw new EntitySyntaxException("INVALID_DATE");
+        }
+        return bookLoanRepository.findBookLoansDueTodayWithBookTitle(Date.valueOf(date));
+    }
+    
+    @Override
+    public List<Map<String, Object>> findOverdueBookLoans(String date) throws EntitySyntaxException {
+        if (!toolsService.isValidDateFormat(date)) {
+            throw new EntitySyntaxException("INVALID_DATE");
+        }
+        return bookLoanRepository.findOverdueBookLoans(Date.valueOf(date));
+        
+    }
+    
 }

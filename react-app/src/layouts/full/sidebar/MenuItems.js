@@ -1,5 +1,5 @@
 import {
-  IconBookOff, IconArrowsDiff, IconAddressBook, IconAperture, IconCopy, IconLayoutDashboard, IconLogin, IconMoodHappy, IconTypography, IconUserPlus, IconBook
+  IconClipboardText, IconBookOff, IconArrowsDiff, IconAddressBook, IconAperture, IconCopy, IconLayoutDashboard, IconLogin, IconMoodHappy, IconTypography, IconUserPlus, IconBook
 } from '@tabler/icons';
 
 import { uniqueId } from 'lodash';
@@ -30,6 +30,12 @@ const Menuitems = [
     title: 'Devolver Prestamo',
     icon: IconAddressBook,
     href: '/student-loans'
+  },
+  {
+    id: uniqueId(),
+    title: 'Prestamos de Hoy',
+    icon: IconClipboardText,
+    href: '/today-loans-to-due'
   },
   {
     navlabel: true,

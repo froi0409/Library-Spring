@@ -8,12 +8,16 @@ import com.froi.library.exceptions.EntityNotFoundException;
 import com.froi.library.exceptions.EntitySyntaxException;
 import com.froi.library.services.bookloan.BookLoanService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.sql.Date;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/v1/bookloan")
@@ -62,4 +66,17 @@ public class BookLoanController {
                 .ok(bookLoanService.returnLoan(returnLoan));
     }
     
+    @GetMapping(path = "/today/{date}")
+    @PreAuthorize("hasRole('LIBRARIAN')")
+    public ResponseEntity<List<Map<String, Object>>> todayLoans(@PathVariable String date) throws EntitySyntaxException {
+        return ResponseEntity
+                .ok(bookLoanService.findBookLoansDueToday(date));
+    }
+    
+    @GetMapping(path = "/overdueLoans/{date}")
+    @PreAuthorize("hasRole('LIBRARIAN')")
+    public ResponseEntity<List<Map<String, Object>>> findOverdueBookLoans(@PathVariable String date) throws EntitySyntaxException {
+        return ResponseEntity
+                .ok(bookLoanService.findOverdueBookLoans(date));
+    }
 }
