@@ -4,5 +4,5 @@ FROM nginx:latest
 # Copia el archivo de configuración de NGINX
 COPY nginx.conf /etc/nginx/nginx.conf
 
-# Exponer el puerto 3000
-EXPOSE 3000
+# Exponer el puerto 4000
+EXPOSE 4000

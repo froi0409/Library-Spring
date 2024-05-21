@@ -1,5 +1,6 @@
 package com.froi.library.services.student;
 
+import com.froi.library.dto.EnableStudentDTO;
 import com.froi.library.dto.user.StudentDTO;
 import com.froi.library.entities.Student;
 import com.froi.library.exceptions.DuplicatedEntityException;
@@ -18,4 +19,6 @@ public interface StudentService {
     Integer getStudentLoansCount(String studentId) throws EntityNotFoundException;
     
     boolean sanctionStudent(String studentId) throws EntityNotFoundException;
+    
+    boolean enableStudent(EnableStudentDTO enableStudent);
 }

@@ -1,5 +1,6 @@
 package com.froi.library.services.student;
 
+import com.froi.library.dto.EnableStudentDTO;
 import com.froi.library.dto.user.StudentDTO;
 import com.froi.library.entities.Student;
 import com.froi.library.enums.studentstatus.StudentStatus;
@@ -86,6 +87,12 @@ public class StudentServiceImpl implements StudentService {
         Student student = studentRepository.findById(studentId)
                 .orElseThrow(() -> new EntityNotFoundException("STUDENT_NOT_FOUND"));
         student.setStatus(StudentStatus.INACTIVE);
+        studentRepository.save(student);
+        return true;
+    }
+    
+    @Override
+    public boolean enableStudent(EnableStudentDTO enableStudent) {
         return true;
     }
 }

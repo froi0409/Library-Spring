@@ -13,4 +13,5 @@ public interface StudentRepository extends JpaRepository<Student, String> {
             "AND status IN ('IN_TIME', 'OUT_OF_TIME')",
             nativeQuery = true)
     int countBookLoansByStudentWithStatus(@Param("studentId") String studentId);
+    
 }

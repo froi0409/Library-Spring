@@ -1,0 +1,35 @@
+version: '3.8'
+
+services:
+  frontend:
+    image: fernandoocana0409/library_frontend:latest
+    networks:
+      - webnet
+
+  backend:
+    image: fernandoocana0409/library_backend:latest
+    depends_on:
+      - db
+    networks:
+      - webnet
+
+  db:
+    image: fernandoocana0409/library_db:latest
+    environment:
+      POSTGRES_DB: postgres
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    networks:
+      - webnet
+
+  nginx:
+    build: ./nginx
+    ports:
+      - "4000:4000"
+    depends_on:
+      - frontend
+    networks:
+      - webnet
+
+networks:
+  webnet:

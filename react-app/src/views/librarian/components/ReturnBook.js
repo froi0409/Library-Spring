@@ -30,7 +30,6 @@ const ReturnBook = ({ loanId, returnDate }) => {
     const [alertMessage, setAlertMessage] = useState('');
 
     const handleSubmit = async (e) => {
-        e.preventDefault();
 
         try {
             const formData = {
