@@ -87,7 +87,7 @@ jobs:
         env: 
           NAME: library_db   
         run: |
-          cd db/
+          cd database/
           docker build -t ${{ env.NAME }}:latest .
           docker tag ${{ env.NAME }}:latest ${{ env.DOCKERHUB_USERNAME }}/${{ env.NAME }}:latest
           docker push ${{ env.DOCKERHUB_USERNAME }}/${{ env.NAME }}:latest

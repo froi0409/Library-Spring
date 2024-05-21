@@ -7,10 +7,14 @@ import com.froi.library.exceptions.EntityNotFoundException;
 import com.froi.library.exceptions.EntitySyntaxException;
 import com.froi.library.services.book.BookService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Map;
 
 @RestController
 @RequestMapping("/v1/book")
@@ -35,6 +39,13 @@ public class BookController {
     public ResponseEntity<Book> findBookByCode(@PathVariable String bookCode) throws EntityNotFoundException {
         return ResponseEntity
                 .ok(bookService.getOneBookByCode(bookCode));
+    }
+    
+    @GetMapping(path = "/all")
+    @PreAuthorize("hasRole('LIBRARIAN')")
+    public ResponseEntity<Page<Map<String, Object>>> findAll(Pageable pageable) {
+        return ResponseEntity
+                .ok(bookService.findAll(pageable));
     }
     
 }

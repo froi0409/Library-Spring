@@ -8,6 +8,7 @@
     "@mui/icons-material": "^5.10.9",
     "@mui/lab": "5.0.0-alpha.106",
     "@mui/material": "^5.10.12",
+    "@mui/x-data-grid": "^7.5.0",
     "@mui/x-date-pickers": "^5.0.6",
     "@reduxjs/toolkit": "^1.8.3",
     "@tabler/icons": "^1.84.0",

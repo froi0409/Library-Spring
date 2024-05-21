@@ -3,6 +3,9 @@ import { Navigate } from 'react-router-dom';
 import Loadable from '../layouts/full/shared/loadable/Loadable';
 import { element } from 'prop-types';
 import BookLoan from 'src/views/librarian/components/BookLoan';
+import BookListTable from 'src/views/book/BooksListTable';
+import StudentLayout from 'src/layouts/user/StudentLayout';
+import StudentBookLoansTable from 'src/views/librarian/components/StudentBookLoansTable';
 
 /* ***Layouts**** */
 const FullLayout = Loadable(lazy(() => import('../layouts/full/FullLayout')));
@@ -30,7 +33,9 @@ const Router = [
       { path: '/ui/typography', exact: true, element: <TypographyPage /> },
       { path: '/ui/shadow', exact: true, element: <Shadow /> },
       { path: '*', element: <Navigate to="/auth/404" /> },
-      { path: '/book-loan', element: <BookLoan /> }
+      { path: '/book-loan', element: <BookLoan /> },
+      { path: '/all-books', element: <BookListTable /> },
+      { path: '/student-loans', element: <StudentBookLoansTable /> }
     ],
   },
   {
@@ -43,6 +48,13 @@ const Router = [
       { path: '*', element: <Navigate to="/auth/404" /> },
     ],
   },
+  {
+    path: '/student',
+    element: <StudentLayout />,
+    children: [
+      { path: '/student/dashboard', element: <Dashboard /> }
+    ]
+  }
 ];
 
 export default Router;

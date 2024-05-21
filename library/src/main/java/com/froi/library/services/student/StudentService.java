@@ -16,4 +16,6 @@ public interface StudentService {
     Student getOneStudentById(String id) throws EntityNotFoundException;
     
     Integer getStudentLoansCount(String studentId) throws EntityNotFoundException;
+    
+    boolean sanctionStudent(String studentId) throws EntityNotFoundException;
 }

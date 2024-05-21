@@ -80,4 +80,12 @@ public class StudentServiceImpl implements StudentService {
                 .orElseThrow(() -> new EntityNotFoundException("STUDENT_NOT_FOUND"));
         return studentRepository.countBookLoansByStudentWithStatus(student.getId());
     }
+    
+    @Override
+    public boolean sanctionStudent(String studentId) throws EntityNotFoundException {
+        Student student = studentRepository.findById(studentId)
+                .orElseThrow(() -> new EntityNotFoundException("STUDENT_NOT_FOUND"));
+        student.setStatus(StudentStatus.INACTIVE);
+        return true;
+    }
 }

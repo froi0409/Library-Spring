@@ -46,10 +46,15 @@ const AuthLogin = ({ title, subtitle, subtext }) => {
             setSubmitted(true);
             
             if (response.status === 200) {
-                const token = response.data.token;
+                const { token, role } = response.data;
                 setCookie('jwt', `Bearer ${token}`);
                 
-                navigate('/dashboard');
+                if (role === 'LIBRARIAN') {
+                    navigate('/dashboard');
+                } else if (role === 'STUDENT') {
+                    navigate('/student/dashboard');
+                }
+                
             } else {
                 setResponseMessage('Ocurrió un error al iniciar sesión');
             }

@@ -10,3 +10,6 @@ ENV POSTGRES_PASSWORD=postgres
 COPY script.sql /docker-entrypoint-initdb.d/
 
 # El contenedor de PostgreSQL ejecutará automáticamente los scripts en el directorio /docker-entrypoint-initdb.d/
+
+# Exponer el puerto 5432
+EXPOSE 5432

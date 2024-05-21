@@ -8,9 +8,12 @@ import com.froi.library.exceptions.EntitySyntaxException;
 import com.froi.library.repositories.BookRepository;
 import com.froi.library.services.tools.ToolsService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.sql.Date;
+import java.util.Map;
 import java.util.Optional;
 
 @Service
@@ -69,6 +72,11 @@ public class BookServiceImpl implements BookService {
     public Book getOneBookByCode(String bookCode) throws EntityNotFoundException {
         return bookRepository.findById(bookCode)
                 .orElseThrow(() -> new EntityNotFoundException("BOOK_NOT_FOUND"));
+    }
+    
+    @Override
+    public Page<Map<String, Object>> findAll(Pageable pageable) {
+        return bookRepository.findAllBooksAndLoanCounts(pageable);
     }
     
 }

@@ -1,5 +1,5 @@
 import {
-  IconAperture, IconCopy, IconLayoutDashboard, IconLogin, IconMoodHappy, IconTypography, IconUserPlus, IconBook
+  IconAddressBook, IconAperture, IconCopy, IconLayoutDashboard, IconLogin, IconMoodHappy, IconTypography, IconUserPlus, IconBook
 } from '@tabler/icons';
 
 import { uniqueId } from 'lodash';
@@ -73,6 +73,22 @@ const Menuitems = [
     title: 'Realizar Prestamo',
     icon: IconBook,
     href: '/book-loan'
+  },
+  {
+    id: uniqueId(),
+    title: 'Devolver Prestamo',
+    icon: IconAddressBook,
+    href: '/student-loans'
+  },
+  {
+    navlabel: true,
+    subheader: 'Libros'
+  },
+  {
+    id: uniqueId(),
+    title: 'Listar Libros',
+    icon: IconBook,
+    href: '/all-books'
   }
 ];
 

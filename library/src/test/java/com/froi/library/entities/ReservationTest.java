@@ -6,7 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.time.LocalDate;
 import java.time.Month;
-import java.util.Date;
+import java.sql.Date;
 
 public class ReservationTest {
     

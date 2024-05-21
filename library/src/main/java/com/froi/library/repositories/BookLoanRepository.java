@@ -1,12 +1,14 @@
 package com.froi.library.repositories;
 
 import com.froi.library.entities.BookLoan;
+import com.froi.library.enums.bookstatus.BookLoanStatus;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.sql.Date;
+import java.util.List;
 
 @Repository
 public interface BookLoanRepository extends JpaRepository<BookLoan, Integer> {
@@ -18,5 +20,7 @@ public interface BookLoanRepository extends JpaRepository<BookLoan, Integer> {
             "(SELECT COUNT(*) FROM public.reservation r WHERE r.book = :bookCode AND r.reservation_validated >= (CAST(:specificDate AS timestamp) - INTERVAL '1 day')) " +
             "FROM public.book b WHERE b.code = :bookCode", nativeQuery = true)
     Integer countAvailableCopies(@Param("bookCode") String bookCode, @Param("specificDate") Date specificDate);
+    
+    List<BookLoan> findAllByStudentAndStatus(String student, BookLoanStatus status);
     
 }

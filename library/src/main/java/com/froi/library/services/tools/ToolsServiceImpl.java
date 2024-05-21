@@ -47,14 +47,12 @@ public class ToolsServiceImpl implements ToolsService{
     @Override
     public boolean isValidDateFormat(String date) {
         try {
-            // Crear un formateador de fecha con el patrón "yyyy-MM-dd"
             DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
             
-            // Intentar parsear la fecha con el formateador
             dateFormatter.parse(date);
-            return true; // La fecha es válida
+            return true;
         } catch (DateTimeParseException e) {
-            return false; // La fecha no es válida
+            return false;
         }
     }
     
