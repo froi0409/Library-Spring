@@ -23,7 +23,7 @@ import static org.mockito.Mockito.when;
 @ExtendWith(MockitoExtension.class)
 public class BookServiceImplTest {
 
-    private static final String CODE = "0-19-852663-6";
+    private static final String CODE = "0198526636";
     private static final String TITLE = "Calculo, 8va Edición";
     private static final String AUTHOR = "James Stewart";
     private static final String PUBLISHER = "CENGAGE LEARNING";

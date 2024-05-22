@@ -23,10 +23,11 @@ public interface BookRepository extends JpaRepository<Book, String> {
             "    WHERE status IN ('IN_TIME', 'OUT_OF_TIME') " +
             "    GROUP BY book " +
             ") bl ON b.code = bl.book " +
-            "WHERE b.code LIKE CONCAT('%', :searchTerm, '%') " +
-            "   OR b.title LIKE CONCAT('%', :searchTerm, '%') " +
-            "   OR b.author LIKE CONCAT('%', :searchTerm, '%') " +
-            "   OR b.publisher LIKE CONCAT('%', :searchTerm, '%')", nativeQuery = true)
+            "WHERE LOWER(b.code) LIKE CONCAT('%', LOWER(:searchTerm), '%') " +
+            "   OR LOWER(b.title) LIKE CONCAT('%', LOWER(:searchTerm), '%') " +
+            "   OR LOWER(b.author) LIKE CONCAT('%', LOWER(:searchTerm), '%') " +
+            "   OR LOWER(b.publisher) LIKE CONCAT('%', LOWER(:searchTerm), '%')", nativeQuery = true)
     List<Map<String, Object>> findAllBooksAndLoanCounts(@Param("searchTerm") String searchTerm);
+    
     
 }

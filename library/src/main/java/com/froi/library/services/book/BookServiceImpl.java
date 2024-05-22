@@ -30,7 +30,7 @@ public class BookServiceImpl implements BookService {
     
     @Override
     public Book createBook(CreateBookRequestDTO newBook) throws DuplicatedEntityException, EntitySyntaxException {
-        Optional<Book> bookToCheck = bookRepository.findById(newBook.getCode());
+        Optional<Book> bookToCheck = bookRepository.findById(newBook.getCode().replace("-", ""));
         if (bookToCheck.isPresent()) {
             throw new DuplicatedEntityException("DUPLICATED_BOOK");
         }
@@ -49,7 +49,7 @@ public class BookServiceImpl implements BookService {
         
         
         Book bookEntity = new Book();
-        bookEntity.setCode(newBook.getCode());
+        bookEntity.setCode(newBook.getCode().replace("-", ""));
         bookEntity.setTitle(newBook.getTitle());
         bookEntity.setAuthor(newBook.getAuthor());
         bookEntity.setPublisher(newBook.getPublisher());
