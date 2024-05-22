@@ -15,6 +15,8 @@ import OverduePaymentByStudent from 'src/views/librarian/reports/OverduePaymemtB
 import AdminLayout from 'src/layouts/admin/AdminLayour';
 import UploadDatafile from 'src/views/administrator/UploadDatafile';
 import AddBook from 'src/views/book/AddBook';
+import StudentDashBoard from 'src/views/student/StudentDashboard';
+import AllStudentsTable from 'src/views/librarian/reports/AllStudentsTable';
 
 /* ***Layouts**** */
 const FullLayout = Loadable(lazy(() => import('../layouts/full/FullLayout')));
@@ -49,7 +51,8 @@ const Router = [
       { path: '/revenue-information', element: <RevenueInformation /> },
       { path: '/degree-top-loans', element: <DegreeTopLoans /> },
       { path: '/overdue-payment-by-student', element: <OverduePaymentByStudent /> },
-      { path: '/add-book', element: <AddBook /> }
+      { path: '/add-book', element: <AddBook /> },
+      { path: '/all-students', element: <AllStudentsTable /> }
     ],
   },
   {
@@ -66,7 +69,7 @@ const Router = [
     path: '/student',
     element: <StudentLayout />,
     children: [
-      { path: '/student/dashboard', element: <Dashboard /> }
+      { path: '/student/dashboard', element: <StudentDashBoard /> }
     ]
   },
   {

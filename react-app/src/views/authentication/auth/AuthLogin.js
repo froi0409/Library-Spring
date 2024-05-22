@@ -28,7 +28,7 @@ const AuthLogin = ({ title, subtitle, subtext }) => {
         password: '',
     });
 
-    const [ cookies, setCookie ] = useCookies([ 'jwt' ]);
+    const [ cookies, setCookie, removeCookie ] = useCookies([ 'jwt' ]);
     const navigate = useNavigate();
 
     const handleChange = (event) => {
@@ -41,6 +41,7 @@ const AuthLogin = ({ title, subtitle, subtext }) => {
 
     useEffect(() => {
       const verifySystemData = async () => {
+            removeCookie(['jwt']);
             try {
                 const response = await axios.get(`${API_URL}/v1/datafile/verifySystemData`);
                 if (response.data === false) {

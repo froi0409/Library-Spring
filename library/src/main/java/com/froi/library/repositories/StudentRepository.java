@@ -24,6 +24,11 @@ public interface StudentRepository extends JpaRepository<Student, String> {
             "AND EXTRACT(DAY FROM age(:checkDate, loan_date)) >= 30", nativeQuery = true)
     Integer countInvalidLoans(@Param("studentId") String studentId, @Param("checkDate") Date checkDate);
     
+    @Query(value = "SELECT * FROM Student s " +
+            "WHERE LOWER(s.id) LIKE CONCAT('%', LOWER(:searchTerm), '%') " +
+            "   OR LOWER(s.first_name) LIKE CONCAT('%', LOWER(:searchTerm), '%') " +
+            "   OR LOWER(s.last_name) LIKE CONCAT('%', LOWER(:searchTerm), '%') ", nativeQuery = true)
+    List<Student> findAllStudentsIgnoreCase(@Param("searchTerm") String searchTerm);
     
     
     List<Student> findAllByStatus(StudentStatus status);

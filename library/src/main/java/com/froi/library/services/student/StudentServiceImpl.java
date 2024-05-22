@@ -115,4 +115,9 @@ public class StudentServiceImpl implements StudentService {
     public List<Student> findAllInactiveStudents() {
         return studentRepository.findAllByStatus(StudentStatus.INACTIVE);
     }
+    
+    @Override
+    public List<Student> findAll(String searchTherm) {
+        return studentRepository.findAllStudentsIgnoreCase(searchTherm);
+    }
 }

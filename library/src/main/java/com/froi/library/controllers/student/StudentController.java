@@ -51,4 +51,10 @@ public class StudentController {
         return ResponseEntity
                 .ok(studentService.findAllInactiveStudents());
     }
+    
+    @GetMapping(path = "/getAll")
+    public ResponseEntity<List<Student>> getAll(@RequestParam String searchTerm) {
+        return ResponseEntity
+                .ok(studentService.findAll(searchTerm));
+    }
 }

@@ -1,5 +1,5 @@
 import {
-  IconClipboardText, IconBookOff, IconArrowsDiff, IconAddressBook, IconAperture, IconCopy, IconLayoutDashboard, IconLogin, IconMoodHappy, IconTypography, IconUserPlus, IconBook
+  IconSchool, IconClipboardText, IconBookOff, IconArrowsDiff, IconAddressBook, IconAperture, IconCopy, IconLayoutDashboard, IconLogin, IconMoodHappy, IconTypography, IconUserPlus, IconBook
 } from '@tabler/icons';
 
 import { uniqueId } from 'lodash';
@@ -73,8 +73,14 @@ const Menuitems = [
   },
   {
     id: uniqueId(),
-    title: 'Estudiantes Sancionados',
+    title: 'Listado de Estudiantes',
     icon: IconBookOff,
+    href: '/all-students'
+  },
+  {
+    id: uniqueId(),
+    title: 'Estudiantes Sancionados',
+    icon: IconSchool,
     href: '/all-inactive-students'
   }
 ];

@@ -25,4 +25,6 @@ public interface StudentService {
     boolean enableStudent(EnableStudentDTO enableStudent) throws EntityNotFoundException, EntitySyntaxException, DenegatedActionException;
     
     List<Student> findAllInactiveStudents();
+    
+    List<Student> findAll(String searchTherm);
 }

@@ -44,7 +44,7 @@ public class BookController {
     }
     
     @GetMapping(path = "/all")
-    @PreAuthorize("hasRole('LIBRARIAN')")
+    @PreAuthorize("hasRole('LIBRARIAN') OR hasRole('STUDENT')")
     public ResponseEntity<List<Map<String, Object>>> findAll(@RequestParam String searchTerm) {
         return ResponseEntity
                 .ok(bookService.findAll(searchTerm));
