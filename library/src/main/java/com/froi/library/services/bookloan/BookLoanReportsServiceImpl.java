@@ -79,6 +79,7 @@ public class BookLoanReportsServiceImpl implements BookLoanReportsService {
         if (degreeInformation != null && degreeInformation.containsKey("degree_id")) {
             Integer degreeId = ((Number) degreeInformation.get("degree_id")).intValue();
             List<BookLoan> loanList = bookLoanRepository.findLoansByDegree(degreeId);
+            System.out.println("breakpoint 3");
             
             return new LoansByDegreeResponseDTO(degreeInformation, loanList);
         }

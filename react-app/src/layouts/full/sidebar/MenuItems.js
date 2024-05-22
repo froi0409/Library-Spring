@@ -44,6 +44,18 @@ const Menuitems = [
     href: '/overdue-loans'
   },
   {
+    id: uniqueId(),
+    title: 'Ganancias por Prestamo',
+    icon: IconClipboardText,
+    href: '/revenue-information'
+  },
+  {
+    id: uniqueId(),
+    title: 'Top Carreras',
+    icon: IconClipboardText,
+    href: '/degree-top-loans'
+  },
+  {
     navlabel: true,
     subheader: 'Estudiantes'
   },
