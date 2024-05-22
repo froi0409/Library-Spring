@@ -8,11 +8,10 @@ import com.froi.library.exceptions.EntitySyntaxException;
 import com.froi.library.repositories.BookRepository;
 import com.froi.library.services.tools.ToolsService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.sql.Date;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -75,8 +74,8 @@ public class BookServiceImpl implements BookService {
     }
     
     @Override
-    public Page<Map<String, Object>> findAll(Pageable pageable) {
-        return bookRepository.findAllBooksAndLoanCounts(pageable);
+    public List<Map<String, Object>> findAll(String searchTerm) {
+        return bookRepository.findAllBooksAndLoanCounts(searchTerm);
     }
     
 }

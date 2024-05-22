@@ -5,10 +5,10 @@ import com.froi.library.entities.Book;
 import com.froi.library.exceptions.DuplicatedEntityException;
 import com.froi.library.exceptions.EntityNotFoundException;
 import com.froi.library.exceptions.EntitySyntaxException;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -20,5 +20,5 @@ public interface BookService {
     
     Book getOneBookByCode(String bookCode) throws EntityNotFoundException;
     
-    Page<Map<String, Object>> findAll(Pageable pageable);
+    List<Map<String, Object>> findAll(String searchTerm);
 }

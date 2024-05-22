@@ -14,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -44,9 +45,9 @@ public class BookController {
     
     @GetMapping(path = "/all")
     @PreAuthorize("hasRole('LIBRARIAN')")
-    public ResponseEntity<Page<Map<String, Object>>> findAll(Pageable pageable) {
+    public ResponseEntity<List<Map<String, Object>>> findAll(@RequestParam String searchTerm) {
         return ResponseEntity
-                .ok(bookService.findAll(pageable));
+                .ok(bookService.findAll(searchTerm));
     }
     
 }

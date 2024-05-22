@@ -3,18 +3,20 @@ import { useState, useEffect } from 'react';
 import { DataGrid } from '@mui/x-data-grid';
 import axios from 'axios';
 import { useCookies } from 'react-cookie';
-import { Card, CardHeader, CardContent } from '@mui/material';
+import { Card, CardHeader, CardContent, Grid, TextField,InputAdornment } from '@mui/material';
+import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
 
 const columns = [
-  { field: 'code', headerName: 'Código', width: 150 },
-  { field: 'title', headerName: 'Titulo', width: 200 },
-  { field: 'publisher', headerName: 'Editorial', width: 150 },
-  { field: 'author', headerName: 'Autor', width: 150 },
+  { field: 'code', headerName: 'Código', width: 200 },
+  { field: 'title', headerName: 'Titulo', align: 'right', width: 200 },
+  { field: 'publisher', headerName: 'Editorial', align: 'right', width: 200 },
+  { field: 'author', headerName: 'Autor', align: 'right', width: 200 },
   {
     field: 'loan_count',
     headerName: 'Disponibles',
+    align: 'right',
     type: 'number',
-    width: 120,
+    width: 200,
   },
 ];
 
@@ -27,6 +29,7 @@ export default function BookListTable() {
   const [pageSize, setPageSize] = useState(5);
   const [rowCount, setRowCount] = useState(0);
   const [cookies] = useCookies(['jwt']);
+  const [searchTerm, setSearchTerm] = useState('');
 
   useEffect(() => {
     const fetchData = async () => {
@@ -34,14 +37,13 @@ export default function BookListTable() {
         try {
           const response = await axios.get(`${API_URL}/v1/book/all`, {
             params: {
-              page: page, // la API puede estar basada en 0
-              size: pageSize,
+              searchTerm
             },
             headers: {
               Authorization: cookies.jwt,
             },
           });
-          const { content, totalElements } = response.data; // Ajusta esto basado en la estructura de tu respuesta
+          const content = response.data;
           console.log(content)
           // Agregar un nuevo campo "id" con el valor del campo "code" a cada elemento
           const rowsWithId = content.map(item => ({
@@ -50,7 +52,6 @@ export default function BookListTable() {
           }));
       
           setRows(rowsWithId);
-          setRowCount(totalElements);
         } catch (error) {
           console.error('Error fetching data:', error);
         }
@@ -58,28 +59,46 @@ export default function BookListTable() {
       };
 
       fetchData();
-  }, [page, pageSize]);
+  }, [, searchTerm]);
 
   return (
     <Card>
         <CardHeader title='Listado de Libros' titleTypographyProps={{ variant: 'h6' }} />
         <CardContent sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-            <div style={{ flexGrow: 1, width: '100%' }}> {/* Usamos flexGrow: 1 para que el div ocupe todo el espacio vertical disponible */}
-            <DataGrid
-                rows={rows}
-                columns={columns}
-                pagination
-                pageSize={pageSize}
-                rowsPerPageOptions={[25, 50, 100]}
-                rowCount={rowCount}
-                paginationMode="server"
-                onPageChange={(newPage) => setPage(newPage)}
-                onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
-                loading={loading}
-                checkboxSelection
-                sx={{ width: '100%' }}
-            />
-            </div> 
+          <Grid container spacing={5}>
+            <Grid item xs={12}>
+              <TextField
+                fullWidth
+                label='Filtro'
+                type='text'
+                required
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                InputProps={{
+                  startAdornment: (
+                    <InputAdornment position='start'>
+                      <SearchOutlinedIcon />
+                    </InputAdornment>
+                  )
+                }}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <div style={{ height: 400, width: '100%' }}>
+                <DataGrid
+                  rows={rows}
+                  columns={columns}
+                  initialState={{
+                    pagination: {
+                      paginationModel: { page: 0, pageSize: 5 },
+                    },
+                  }}
+                  pageSizeOptions={[5, 10, 25, 50]}
+                  checkboxSelection
+                />
+              </div>
+            </Grid>
+          </Grid>
         </CardContent>
     </Card>
   );
