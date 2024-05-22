@@ -8,8 +8,8 @@ import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
 
 const columns = [
   { field: 'id', headerName: 'Carnet', width: 150 },
-  { field: 'first_name', headerName: 'Nombre', align: 'right', width: 150 },
-  { field: 'last_name', headerName: 'Apellido', align: 'right', width: 150 },
+  { field: 'firstName', headerName: 'Nombre', align: 'right', width: 150 },
+  { field: 'lastName', headerName: 'Apellido', align: 'right', width: 150 },
   { field: 'degree', headerName: 'Carrera', align: 'right', width: 150 },
   { field: 'status', headerName: 'Estado', align: 'right', width: 150 },
   { field: 'email', headerName: 'Correo', align: 'right', width: 150 },

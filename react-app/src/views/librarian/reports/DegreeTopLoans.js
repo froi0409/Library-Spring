@@ -83,7 +83,7 @@ export default function DegreeTopLoans() {
 
   return (
     <Card>
-      <CardHeader title='Listado de Ganancias' titleTypographyProps={{ variant: 'h6' }} />
+      <CardHeader title='Top Carreras' titleTypographyProps={{ variant: 'h6' }} />
       <CardContent sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
         <Grid container spacing={5}>
           <Grid item xs={12}>
