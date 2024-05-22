@@ -38,6 +38,12 @@ const Menuitems = [
     href: '/today-loans-to-due'
   },
   {
+    id: uniqueId(),
+    title: 'Prestamos Atrasados',
+    icon: IconClipboardText,
+    href: '/overdue-loans'
+  },
+  {
     navlabel: true,
     subheader: 'Estudiantes'
   },

@@ -24,8 +24,5 @@ public interface BookLoanService {
     List<BookLoan> findNoReturnedByStudent(String studentId, String dateProvided) throws EntityNotFoundException;
     
     BookLoan findById(String loanId, String returnDate) throws EntitySyntaxException, EntityNotFoundException;
-    
-    List<Map<String, Object>> findBookLoansDueToday(String date) throws EntitySyntaxException;
-    
-    List<Map<String, Object>> findOverdueBookLoans(String date) throws EntitySyntaxException;
+
 }

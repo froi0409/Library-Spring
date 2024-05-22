@@ -102,5 +102,6 @@ create table public.reservation
     reservation_validated date
 );
 insert into public."user" values ('librarian1', '$2a$04$l8VdSu9HMt1ZzmlW6enB/etnd2PA5mBkAHMS7Ov8sb.kU/a/SvcQm', 'LIBRARIAN', null, null);
+insert into public."user" values ('admin1', '$2a$04$l8VdSu9HMt1ZzmlW6enB/etnd2PA5mBkAHMS7Ov8sb.kU/a/SvcQm', 'ADMINISTRATOR', null, null);
 
 alter table public.reservation owner to postgres;

@@ -214,22 +214,4 @@ public class BookLoanServiceImpl implements BookLoanService {
         return true;
     }
     
-    
-    @Override
-    public List<Map<String, Object>> findBookLoansDueToday(String date) throws EntitySyntaxException {
-        if (date != null && !toolsService.isValidDateFormat(date)) {
-            throw new EntitySyntaxException("INVALID_DATE");
-        }
-        return bookLoanRepository.findBookLoansDueTodayWithBookTitle(Date.valueOf(date));
-    }
-    
-    @Override
-    public List<Map<String, Object>> findOverdueBookLoans(String date) throws EntitySyntaxException {
-        if (!toolsService.isValidDateFormat(date)) {
-            throw new EntitySyntaxException("INVALID_DATE");
-        }
-        return bookLoanRepository.findOverdueBookLoans(Date.valueOf(date));
-        
-    }
-    
 }

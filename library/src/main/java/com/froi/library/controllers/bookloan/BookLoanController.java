@@ -2,10 +2,12 @@ package com.froi.library.controllers.bookloan;
 
 import com.froi.library.dto.bookloan.CreateBookLoanDTO;
 import com.froi.library.dto.bookloan.ReturnLoanDTO;
+import com.froi.library.dto.bookloan.RevenueResponseDTO;
 import com.froi.library.entities.BookLoan;
 import com.froi.library.exceptions.DenegatedActionException;
 import com.froi.library.exceptions.EntityNotFoundException;
 import com.froi.library.exceptions.EntitySyntaxException;
+import com.froi.library.services.bookloan.BookLoanReportsService;
 import com.froi.library.services.bookloan.BookLoanService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -24,10 +26,12 @@ import java.util.Map;
 public class BookLoanController {
 
     private BookLoanService bookLoanService;
+    private BookLoanReportsService bookLoanReportsService;
     
     @Autowired
-    public BookLoanController(BookLoanService bookLoanService) {
+    public BookLoanController(BookLoanService bookLoanService, BookLoanReportsService bookLoanReportsService) {
         this.bookLoanService = bookLoanService;
+        this.bookLoanReportsService = bookLoanReportsService;
     }
     
     @PostMapping
@@ -70,13 +74,27 @@ public class BookLoanController {
     @PreAuthorize("hasRole('LIBRARIAN')")
     public ResponseEntity<List<Map<String, Object>>> todayLoans(@PathVariable String date) throws EntitySyntaxException {
         return ResponseEntity
-                .ok(bookLoanService.findBookLoansDueToday(date));
+                .ok(bookLoanReportsService.findBookLoansDueToday(date));
     }
     
     @GetMapping(path = "/overdueLoans/{date}")
     @PreAuthorize("hasRole('LIBRARIAN')")
     public ResponseEntity<List<Map<String, Object>>> findOverdueBookLoans(@PathVariable String date) throws EntitySyntaxException {
         return ResponseEntity
-                .ok(bookLoanService.findOverdueBookLoans(date));
+                .ok(bookLoanReportsService.findOverdueBookLoans(date));
+    }
+    
+    @GetMapping(path = "/revenue/{startDate}/{endDate}")
+    @PreAuthorize("hasRole('LIBRARIAN')")
+    public ResponseEntity<RevenueResponseDTO> findTotalRevenueBetweenDates(@PathVariable String startDate, @PathVariable String endDate) throws EntitySyntaxException {
+        return ResponseEntity
+                .ok(bookLoanReportsService.findTotalRevenueBetweenDates(startDate, endDate));
+    }
+    
+    @GetMapping(path = "/revenue")
+    @PreAuthorize("hasRole('LIBRARIAN')")
+    public ResponseEntity<RevenueResponseDTO> findTotalRevenue() {
+        return ResponseEntity
+                .ok(bookLoanReportsService.findTotalRevenue());
     }
 }

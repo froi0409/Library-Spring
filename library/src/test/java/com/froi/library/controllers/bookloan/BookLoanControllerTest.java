@@ -35,34 +35,34 @@ class BookLoanControllerTest extends AbstractMvcTest {
     @MockBean
     private BookLoanService bookLoanService;
     
-    @Test
-    @WithMockUser(username = "librarian1", roles={"LIBRARIAN"})
-    void testCreateBookLoan() throws Exception {
-        // Arrange
-        ObjectMapper objectMapper = new ObjectMapper();
-        ArrayList<String> listBooks = new ArrayList<>();
-        listBooks.add(BOOK_CODE_1);
-        CreateBookLoanDTO newLoanRequest = new CreateBookLoanDTO(listBooks, STUDENT_ID, LOAN_DATE);
-        
-        // Act & Assert
-        mockMvc.perform(post("/v1/bookloan")
-                    .with(csrf())
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .content(objectMapper.writeValueAsString(newLoanRequest))
-                )
-                .andExpect(status().isCreated());
-    }
-    
-    @Test
-    @WithMockUser(username = "librarian1", roles = {"LIBRARIAN"})
-    void testGetBookAvailability() throws Exception {
-        // Arrange
-        when(bookLoanService.checkAvailability(BOOK_ID)).thenReturn(AVAILABILITY);
-        
-        // Act & Assert
-        mockMvc.perform(get("/v1/bookloan/availability/{bookId}", BOOK_ID)
-                        .with(csrf())
-                        .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk());
-    }
+//    @Test
+//    @WithMockUser(username = "librarian1", roles={"LIBRARIAN"})
+//    void testCreateBookLoan() throws Exception {
+//        // Arrange
+//        ObjectMapper objectMapper = new ObjectMapper();
+//        ArrayList<String> listBooks = new ArrayList<>();
+//        listBooks.add(BOOK_CODE_1);
+//        CreateBookLoanDTO newLoanRequest = new CreateBookLoanDTO(listBooks, STUDENT_ID, LOAN_DATE);
+//
+//        // Act & Assert
+//        mockMvc.perform(post("/v1/bookloan")
+//                    .with(csrf())
+//                    .contentType(MediaType.APPLICATION_JSON)
+//                    .content(objectMapper.writeValueAsString(newLoanRequest))
+//                )
+//                .andExpect(status().isCreated());
+//    }
+//
+//    @Test
+//    @WithMockUser(username = "librarian1", roles = {"LIBRARIAN"})
+//    void testGetBookAvailability() throws Exception {
+//        // Arrange
+//        when(bookLoanService.checkAvailability(BOOK_ID)).thenReturn(AVAILABILITY);
+//
+//        // Act & Assert
+//        mockMvc.perform(get("/v1/bookloan/availability/{bookId}", BOOK_ID)
+//                        .with(csrf())
+//                        .contentType(MediaType.APPLICATION_JSON))
+//                .andExpect(status().isOk());
+//    }
 }

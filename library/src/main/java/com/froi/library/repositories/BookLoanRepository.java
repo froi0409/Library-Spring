@@ -39,4 +39,16 @@ public interface BookLoanRepository extends JpaRepository<BookLoan, Integer> {
     List<Map<String, Object>> findOverdueBookLoans(@Param("date") Date date);
     
     
+    @Query(value = "SELECT SUM(loan_total) AS totalLoan, SUM(delay_total) AS totalDelay, (SUM(loan_total) + SUM(delay_total)) AS totalRevenue " +
+            "FROM book_loan WHERE loan_date BETWEEN :startDate AND :endDate", nativeQuery = true)
+    Map<String, Double> findTotalRevenueBetweenDates(Date startDate, Date endDate);
+    
+    @Query(value = "SELECT SUM(loan_total) AS totalLoan, SUM(delay_total) AS totalDelay, (SUM(loan_total) + SUM(delay_total)) AS totalRevenue " +
+            "FROM book_loan", nativeQuery = true)
+    Map<String, Double> findTotalRevenue();
+    
+    @Query(value = "SELECT * FROM book_loan WHERE loan_date BETWEEN :startDate AND :endDate", nativeQuery = true)
+    List<BookLoan> findBookLoansBetweenDates(Date startDate, Date endDate);
+    
+    
 }
