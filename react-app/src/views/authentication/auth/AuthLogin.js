@@ -53,6 +53,8 @@ const AuthLogin = ({ title, subtitle, subtext }) => {
                     navigate('/all-books');
                 } else if (role === 'STUDENT') {
                     navigate('/student/dashboard');
+                } else if (role === 'ADMINISTRATOR') {
+                    navigate('/admin/upload-datafile')
                 }
                 
             } else {
