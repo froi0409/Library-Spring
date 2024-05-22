@@ -9,6 +9,9 @@ import com.froi.library.dto.user.CreateUserRequestDTO;
 import com.froi.library.dto.user.StudentDTO;
 import com.froi.library.enums.datafile.DataFileErrorType;
 import com.froi.library.exceptions.*;
+import com.froi.library.repositories.BookRepository;
+import com.froi.library.repositories.DegreeRepository;
+import com.froi.library.repositories.StudentRepository;
 import com.froi.library.services.book.BookService;
 import com.froi.library.services.bookloan.BookLoanService;
 import com.froi.library.services.degree.DegreeService;
@@ -19,7 +22,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.xml.crypto.Data;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -34,21 +36,29 @@ public class DataFileServiceImpl implements DataFileService {
     private UserService userService;
     private DegreeService degreeService;
     private BookLoanService bookLoanService;
+    private StudentRepository studentRepository;
+    private DegreeRepository degreeRepository;
+    private BookRepository bookRepository;
     private ToolsService toolsService;
     
     @Autowired
-    public DataFileServiceImpl(BookService bookService, StudentService studentService, UserService userService, DegreeService degreeService, BookLoanService bookLoanService, ToolsService toolsService) {
+    public DataFileServiceImpl(BookService bookService, StudentService studentService, UserService userService, DegreeService degreeService, BookLoanService bookLoanService, StudentRepository studentRepository, DegreeRepository degreeRepository, BookRepository bookRepository, ToolsService toolsService) {
         this.bookService = bookService;
         this.studentService = studentService;
         this.userService = userService;
         this.degreeService = degreeService;
         this.bookLoanService = bookLoanService;
+        this.studentRepository = studentRepository;
+        this.degreeRepository = degreeRepository;
+        this.bookRepository = bookRepository;
         this.toolsService = toolsService;
     }
     
     @Override
-    public List<String> verifySystemData() {
-        return List.of();
+    public Boolean verifySystemData() {
+        return !(studentRepository.count() <= 0
+                || degreeRepository.count() <= 0
+                || bookRepository.count() <= 0);
     }
     
     @Override

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
     Box,
     Typography,
@@ -38,6 +38,26 @@ const AuthLogin = ({ title, subtitle, subtext }) => {
             [name]: value,
         });
     };
+
+    useEffect(() => {
+      const verifySystemData = async () => {
+            try {
+                const response = await axios.get(`${API_URL}/v1/datafile/verifySystemData`);
+                if (response.data === false) {
+                    setSubmitted(true);
+                    setResponseMessage('Hacen falta datos en el sistema, contacta a un adminsitrador');
+                }
+            } catch (error) {
+                console.error(error)
+                setSubmitted(true);
+                setResponseMessage('Hacen falta datos en el sistema, contacta a un adminsitrador');
+            }
+        
+      }
+    
+      verifySystemData();
+    }, []);
+    
 
     const handleSubmit = async (event) => {
         event.preventDefault();

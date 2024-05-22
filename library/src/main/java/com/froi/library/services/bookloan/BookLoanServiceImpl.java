@@ -126,7 +126,9 @@ public class BookLoanServiceImpl implements BookLoanService {
         
         BookLoan bookLoan = bookLoanRepository.findById(Integer.valueOf(returnLoan.getLoanId()))
                 .orElseThrow(() -> new EntityNotFoundException("LOAN_NOT_FOUND"));
+        checkDelay(bookLoan, Date.valueOf(returnLoan.getReturnDate()));
         bookLoan.setReturnedDate(Date.valueOf(returnLoan.getReturnDate()));
+        
         if (bookLoan.getDelayTotal() > 0) {
             bookLoan.setStatus(BookLoanStatus.RETURNED_OUT_OF_TIME);
         } else {
@@ -145,7 +147,6 @@ public class BookLoanServiceImpl implements BookLoanService {
         List<BookLoan> allLoans = bookLoanRepository.findAll();
         for (BookLoan bookLoan : allLoans) {
             checkDelay(bookLoan, Date.valueOf(LocalDate.now()));
-            bookLoanRepository.save(bookLoan);
         }
         
         return bookLoanRepository.findAll(pageable);
@@ -210,7 +211,6 @@ public class BookLoanServiceImpl implements BookLoanService {
         
         bookLoan.setLoanTotal(loanTotal);
         bookLoan.setDelayTotal(delayTotal);
-        bookLoanRepository.save(bookLoan);
         return true;
     }
     

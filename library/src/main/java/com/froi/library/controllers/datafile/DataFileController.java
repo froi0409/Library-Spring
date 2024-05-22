@@ -28,4 +28,12 @@ public class DataFileController {
         return ResponseEntity
                 .ok(dataFileService.handleDataFile(file));
     }
+    
+    
+    @GetMapping(path = "/verifySystemData")
+    public ResponseEntity<Boolean> verifySystemData() {
+        return ResponseEntity
+                .ok(dataFileService.verifySystemData());
+    }
+    
 }

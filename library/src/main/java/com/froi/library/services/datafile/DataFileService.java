@@ -9,7 +9,7 @@ import java.util.List;
 
 public interface DataFileService {
     DataFileResponseDTO handleDataFile(MultipartFile file) throws UploadDataFileException;
-    List<String> verifySystemData();
+    Boolean verifySystemData();
     
     boolean insertEntity(List<DataFileError> errorsList, String[] columns, int line);
     

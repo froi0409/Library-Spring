@@ -40,11 +40,11 @@ public interface BookLoanRepository extends JpaRepository<BookLoan, Integer> {
     
     
     @Query(value = "SELECT SUM(loan_total) AS totalLoan, SUM(delay_total) AS totalDelay, (SUM(loan_total) + SUM(delay_total)) AS totalRevenue " +
-            "FROM book_loan WHERE loan_date BETWEEN :startDate AND :endDate", nativeQuery = true)
+            "FROM book_loan WHERE (status != 'IN_TIME' AND status != 'OUT_OF_TIME') AND loan_date BETWEEN :startDate AND :endDate", nativeQuery = true)
     Map<String, Double> findTotalRevenueBetweenDates(Date startDate, Date endDate);
     
     @Query(value = "SELECT SUM(loan_total) AS totalLoan, SUM(delay_total) AS totalDelay, (SUM(loan_total) + SUM(delay_total)) AS totalRevenue " +
-            "FROM book_loan", nativeQuery = true)
+            "FROM book_loan WHERE (status != 'IN_TIME' AND status != 'OUT_OF_TIME')", nativeQuery = true)
     Map<String, Double> findTotalRevenue();
     
     @Query(value = "SELECT * FROM book_loan WHERE loan_date BETWEEN :startDate AND :endDate", nativeQuery = true)

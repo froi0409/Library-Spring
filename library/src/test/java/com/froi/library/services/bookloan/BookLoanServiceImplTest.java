@@ -57,6 +57,9 @@ public class BookLoanServiceImplTest {
     private static final String LOAN_ID = "1";
     private static final String RETURN_DATE = "2024-05-10";
     private static final Double BOOK_COST = 225.0;
+    private static final Double DELAY_TOTAL_OUT_OF_TIME = 10.0;
+    private static final Double TOTAL_DELAY_RETURNED_IN_TIME = 0.0;
+    private static final Integer ID = 1;
     
     @Mock
     private BookLoanRepository bookLoanRepository;
@@ -262,10 +265,11 @@ public class BookLoanServiceImplTest {
         // Arrange
         ReturnLoanDTO returnLoan = new ReturnLoanDTO(LOAN_ID, RETURN_DATE);
         BookLoan bookLoan = new BookLoan();
-        bookLoan.setDelayTotal(0.0);
+        bookLoan.setDelayTotal(TOTAL_DELAY_RETURNED_IN_TIME);
+        bookLoan.setLoanDate(Date.valueOf(RETURN_DATE));
         when(toolsService.isPositiveInteger(LOAN_ID)).thenReturn(TRUE_ASSERTION);
         when(toolsService.isValidDateFormat(RETURN_DATE)).thenReturn(TRUE_ASSERTION);
-        when(bookLoanRepository.findById(1)).thenReturn(Optional.of(bookLoan));
+        when(bookLoanRepository.findById(ID)).thenReturn(Optional.of(bookLoan));
         
         // Act
         boolean result = bookLoanService.returnLoan(returnLoan);
@@ -276,15 +280,18 @@ public class BookLoanServiceImplTest {
         verify(bookLoanRepository, times(1)).save(bookLoan);
     }
     
+    
     @Test
     void testReturnLoanSuccessReturnedOutOfTime() throws EntityNotFoundException, EntitySyntaxException {
         // Arrange
         ReturnLoanDTO returnLoan = new ReturnLoanDTO(LOAN_ID, RETURN_DATE);
         BookLoan bookLoan = new BookLoan();
-        bookLoan.setDelayTotal(10.0);
+        bookLoan.setLoanDate(Date.valueOf(LOAN_DATE));
+        bookLoan.setReturnedDate(Date.valueOf(RETURN_DATE));
+        bookLoan.setDelayTotal(DELAY_TOTAL_OUT_OF_TIME);
         when(toolsService.isPositiveInteger(LOAN_ID)).thenReturn(TRUE_ASSERTION);
         when(toolsService.isValidDateFormat(RETURN_DATE)).thenReturn(TRUE_ASSERTION);
-        when(bookLoanRepository.findById(1)).thenReturn(Optional.of(bookLoan));
+        when(bookLoanRepository.findById(ID)).thenReturn(Optional.of(bookLoan));
         
         // Act
         boolean result = bookLoanService.returnLoan(returnLoan);
