@@ -1,7 +1,9 @@
 package com.froi.library.services.bookloan;
 
+import com.froi.library.dto.bookloan.LoansByDegreeResponseDTO;
 import com.froi.library.dto.bookloan.RevenueResponseDTO;
 import com.froi.library.entities.BookLoan;
+import com.froi.library.exceptions.EntityNotFoundException;
 import com.froi.library.exceptions.EntitySyntaxException;
 import com.froi.library.repositories.BookLoanRepository;
 import com.froi.library.services.tools.ToolsService;
@@ -10,7 +12,6 @@ import org.springframework.stereotype.Service;
 
 import java.sql.Date;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 
@@ -56,6 +57,32 @@ public class BookLoanReportsServiceImpl implements BookLoanReportsService {
         Map<String, Double> revenueInformation = bookLoanRepository.findTotalRevenue();
         List<BookLoan> bookLoanList = bookLoanRepository.findAll();
         return new RevenueResponseDTO(revenueInformation, bookLoanList);
+    }
+    
+    @Override
+    public LoansByDegreeResponseDTO findDegreeWithMostLoansBetweenDate(String startDate, String endDate) throws EntitySyntaxException, EntityNotFoundException {
+        checkDates(startDate, endDate);
+        Map<String, Object> degreeInformation = bookLoanRepository.findDegreeWithMostLoansBetweenDates(Date.valueOf(startDate), Date.valueOf(endDate));
+        if (degreeInformation != null && degreeInformation.containsKey("degree_id")) {
+            Integer degreeId = ((Number) degreeInformation.get("degree_id")).intValue();
+            List<BookLoan> loanList = bookLoanRepository.findLoansByDegreeBetweenDates(degreeId, Date.valueOf(startDate), Date.valueOf(endDate));
+            
+            return new LoansByDegreeResponseDTO(degreeInformation, loanList);
+            
+        }
+        throw new EntityNotFoundException("DEGREE_NOT_FOUND");
+    }
+    
+    @Override
+    public LoansByDegreeResponseDTO findDegreeWithMostLoans() throws EntityNotFoundException {
+        Map<String, Object> degreeInformation = bookLoanRepository.findDegreeWithMostLoans();
+        if (degreeInformation != null && degreeInformation.containsKey("degree_id")) {
+            Integer degreeId = ((Number) degreeInformation.get("degree_id")).intValue();
+            List<BookLoan> loanList = bookLoanRepository.findLoansByDegree(degreeId);
+            
+            return new LoansByDegreeResponseDTO(degreeInformation, loanList);
+        }
+        throw new EntityNotFoundException("DEGREE_NOT_FOUND");
     }
     
     public boolean checkDates(String startDate, String endDate) throws EntitySyntaxException {

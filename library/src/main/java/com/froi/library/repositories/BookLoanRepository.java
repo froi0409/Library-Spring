@@ -50,5 +50,33 @@ public interface BookLoanRepository extends JpaRepository<BookLoan, Integer> {
     @Query(value = "SELECT * FROM book_loan WHERE loan_date BETWEEN :startDate AND :endDate", nativeQuery = true)
     List<BookLoan> findBookLoansBetweenDates(Date startDate, Date endDate);
     
+    @Query(value = "SELECT d.id AS degree_id, d.name AS degree_name, COUNT(bl.id) AS total_loans " +
+            "FROM book_loan bl " +
+            "JOIN student s ON bl.student = s.id " +
+            "JOIN degree d ON s.degree = d.id " +
+            "WHERE bl.loan_date BETWEEN :startDate AND :endDate " +
+            "GROUP BY d.name " +
+            "ORDER BY total_loans DESC " +
+            "LIMIT 1", nativeQuery = true)
+    Map<String, Object> findDegreeWithMostLoansBetweenDates(Date startDate, Date endDate);
+    
+    @Query(value = "SELECT d.name AS degree_name, COUNT(bl.id) AS total_loans " +
+            "FROM book_loan bl " +
+            "JOIN student s ON bl.student = s.id " +
+            "JOIN degree d ON s.degree = d.id " +
+            "GROUP BY d.name " +
+            "ORDER BY total_loans DESC " +
+            "LIMIT 1", nativeQuery = true)
+    Map<String, Object> findDegreeWithMostLoans();
+    
+    @Query(value = "SELECT * FROM book_loan bl " +
+            "JOIN student s ON bl.student = s.id " +
+            "WHERE s.degree = :degreeId AND bl.loan_date BETWEEN :startDate AND :endDate", nativeQuery = true)
+    List<BookLoan> findLoansByDegreeBetweenDates(Integer degreeId, Date startDate, Date endDate);
+    
+    @Query(value = "SELECT * FROM book_loan bl " +
+            "JOIN student s ON bl.student = s.id " +
+            "WHERE s.degree = :degreeId", nativeQuery = true)
+    List<BookLoan> findLoansByDegree(Integer degreeId);
     
 }

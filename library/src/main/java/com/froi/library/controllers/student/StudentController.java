@@ -18,6 +18,7 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/v1/student")
 @PreAuthorize("hasRole('LIBRARIAN')")
+@CrossOrigin
 public class StudentController {
     
     private StudentService studentService;

@@ -23,6 +23,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/v1/bookloan")
+@CrossOrigin
 public class BookLoanController {
 
     private BookLoanService bookLoanService;
