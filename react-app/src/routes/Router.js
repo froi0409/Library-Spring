@@ -14,6 +14,7 @@ import DegreeTopLoans from 'src/views/librarian/reports/DegreeTopLoans';
 import OverduePaymentByStudent from 'src/views/librarian/reports/OverduePaymemtByStudent';
 import AdminLayout from 'src/layouts/admin/AdminLayour';
 import UploadDatafile from 'src/views/administrator/UploadDatafile';
+import AddBook from 'src/views/book/AddBook';
 
 /* ***Layouts**** */
 const FullLayout = Loadable(lazy(() => import('../layouts/full/FullLayout')));
@@ -38,8 +39,6 @@ const Router = [
       { path: '/dashboard', exact: true, element: <Dashboard /> },
       { path: '/sample-page', exact: true, element: <SamplePage /> },
       { path: '/icons', exact: true, element: <Icons /> },
-      { path: '/ui/typography', exact: true, element: <TypographyPage /> },
-      { path: '/ui/shadow', exact: true, element: <Shadow /> },
       { path: '*', element: <Navigate to="/auth/404" /> },
       { path: '/book-loan', element: <BookLoan /> },
       { path: '/all-books', element: <BookListTable /> },
@@ -49,7 +48,8 @@ const Router = [
       { path: '/overdue-loans', element: <OverdueLoans /> },
       { path: '/revenue-information', element: <RevenueInformation /> },
       { path: '/degree-top-loans', element: <DegreeTopLoans /> },
-      { path: '/overdue-payment-by-student', element: <OverduePaymentByStudent /> }
+      { path: '/overdue-payment-by-student', element: <OverduePaymentByStudent /> },
+      { path: '/add-book', element: <AddBook /> }
     ],
   },
   {

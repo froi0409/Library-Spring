@@ -16,6 +16,12 @@ const Menuitems = [
     href: '/all-books'
   },
   {
+    id: uniqueId(),
+    title: 'Agregar Libro',
+    icon: IconBook,
+    href: '/add-book'
+  },
+  {
     navlabel: true,
     subheader: 'Prestamos'
   },
