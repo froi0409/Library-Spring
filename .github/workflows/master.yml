@@ -47,6 +47,9 @@ jobs:
 
     env:
       PROJECT_ID: ${{ secrets.PROJECT_ID }}
+      USER_VM: ${{ secrets.USER_VM }}  
+      VM_NAME: ${{ secrets.VM_NAME }} 
+      ZONE: ${{ secrets.ZONE }} 
       DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
       
     steps:
@@ -109,5 +112,10 @@ jobs:
           docker build -t ${{ env.NAME }}:latest .
           docker tag ${{ env.NAME }}:latest ${{ env.DOCKERHUB_USERNAME }}/${{ env.NAME }}:latest
           docker push ${{ env.DOCKERHUB_USERNAME }}/${{ env.NAME }}:latest
-        
+
+      # DEPLOY  
+      - name: 'Execute script on VM'
+        run: |
+          gcloud compute ssh ${{ env.USER_VM }}@${{ env.VM_NAME }} --zone=${{ env.ZONE }} --command="bash project/deploy.sh"
+
       
