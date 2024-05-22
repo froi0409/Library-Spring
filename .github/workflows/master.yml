@@ -116,6 +116,6 @@ jobs:
       # DEPLOY  
       - name: 'Execute script on VM'
         run: |
-          gcloud compute ssh ${{ env.USER_VM }}@${{ env.VM_NAME }} --zone=${{ env.ZONE }} --command="bash project/deploy.sh"
+          gcloud compute ssh ${{ env.USER_VM }}@${{ env.VM_NAME }} --zone=${{ env.ZONE }} --command="cd project && bash deploy.sh"
 
       
