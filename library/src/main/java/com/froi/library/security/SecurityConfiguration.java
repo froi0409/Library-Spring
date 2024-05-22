@@ -40,6 +40,7 @@ public class SecurityConfiguration {
         return http
                 .authorizeHttpRequests((requests) -> requests
                         .requestMatchers(HttpMethod.POST, "/v1/auth/login", "/v1/auth/logout").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/v1/user/helloUser").permitAll()
                         .anyRequest().authenticated())
                 .authenticationProvider(authenticationProvider())
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)

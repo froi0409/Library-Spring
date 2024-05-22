@@ -23,6 +23,11 @@ public class UserController {
         this.userService = userService;
     }
     
+    @GetMapping(path = "/helloUser")
+    public String helloUser() {
+        return "Hello User";
+    }
+    
     @PostMapping
     @PreAuthorize("hasRole('LIBRARIAN')")
     public ResponseEntity<Void> createUser(@RequestBody CreateUserRequestDTO newUser) throws DuplicatedEntityException, EntitySyntaxException, EntityNotFoundException {
