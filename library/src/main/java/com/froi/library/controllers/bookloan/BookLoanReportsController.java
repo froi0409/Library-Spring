@@ -11,6 +11,7 @@ import com.froi.library.services.bookloan.BookLoanService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -82,5 +83,17 @@ public class BookLoanReportsController {
     public ResponseEntity<LoansByDegreeResponseDTO> findDegreeWithMostLoansBetweenDates(@PathVariable String startDate, @PathVariable String endDate) throws EntityNotFoundException, EntitySyntaxException {
         return ResponseEntity
                 .ok(bookLoanReportsService.findDegreeWithMostLoansBetweenDate(startDate, endDate));
+    }
+    
+    @GetMapping(path = "/overduePaymentByStudent/{studentId}")
+    public ResponseEntity<List<BookLoan>> findOverduePaymentByStudentBetweenDates(@PathVariable String studentId) {
+        return ResponseEntity
+                .ok(bookLoanReportsService.findOverduePaymentByStudent(studentId));
+    }
+    
+    @GetMapping(path = "/overduePaymentByStudent/{studentId}/{startDate}/{endDate}")
+    public ResponseEntity<List<BookLoan>> findOverduePaymentByStudentBetweenDates(@PathVariable String studentId, @PathVariable String startDate, @PathVariable String endDate) throws EntitySyntaxException {
+        return ResponseEntity
+                .ok(bookLoanReportsService.findOverduePaymentByStudentBetweenDates(studentId, startDate, endDate));
     }
 }

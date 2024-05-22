@@ -11,6 +11,7 @@ import TodayLoansToDue from 'src/views/librarian/reports/TodayLoansToDue';
 import OverdueLoans from 'src/views/librarian/reports/OverdueLoans';
 import RevenueInformation from 'src/views/librarian/reports/RevenueInformation';
 import DegreeTopLoans from 'src/views/librarian/reports/DegreeTopLoans';
+import OverduePaymentByStudent from 'src/views/librarian/reports/OverduePaymemtByStudent';
 
 /* ***Layouts**** */
 const FullLayout = Loadable(lazy(() => import('../layouts/full/FullLayout')));
@@ -46,6 +47,7 @@ const Router = [
       { path: '/overdue-loans', element: <OverdueLoans /> },
       { path: '/revenue-information', element: <RevenueInformation /> },
       { path: '/degree-top-loans', element: <DegreeTopLoans /> },
+      { path: '/overdue-payment-by-student', element: <OverduePaymentByStudent /> }
     ],
   },
   {

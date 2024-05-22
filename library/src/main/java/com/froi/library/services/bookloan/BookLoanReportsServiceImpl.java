@@ -86,6 +86,17 @@ public class BookLoanReportsServiceImpl implements BookLoanReportsService {
         throw new EntityNotFoundException("DEGREE_NOT_FOUND");
     }
     
+    @Override
+    public List<BookLoan> findOverduePaymentByStudentBetweenDates(String studentId, String startDate, String endDate) throws EntitySyntaxException {
+        checkDates(startDate, endDate);
+        return bookLoanRepository.findOverduePaymentsByStudentBetweenDates(studentId, Date.valueOf(startDate), Date.valueOf(endDate));
+    }
+    
+    @Override
+    public List<BookLoan> findOverduePaymentByStudent(String studentId) {
+        return bookLoanRepository.findOverduePaymentsByStudent(studentId);
+    }
+    
     public boolean checkDates(String startDate, String endDate) throws EntitySyntaxException {
         if (!toolsService.isValidDateFormat(startDate)) {
             throw new EntitySyntaxException("INVALID_START_DATE");

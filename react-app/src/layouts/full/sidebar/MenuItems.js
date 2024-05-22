@@ -56,6 +56,12 @@ const Menuitems = [
     href: '/degree-top-loans'
   },
   {
+    id: uniqueId(),
+    title: 'Moras Pagadas',
+    icon: IconClipboardText,
+    href: '/overdue-payment-by-student'
+  },
+  {
     navlabel: true,
     subheader: 'Estudiantes'
   },

@@ -2,6 +2,7 @@ package com.froi.library.services.bookloan;
 
 import com.froi.library.dto.bookloan.LoansByDegreeResponseDTO;
 import com.froi.library.dto.bookloan.RevenueResponseDTO;
+import com.froi.library.entities.BookLoan;
 import com.froi.library.exceptions.EntityNotFoundException;
 import com.froi.library.exceptions.EntitySyntaxException;
 
@@ -20,4 +21,8 @@ public interface BookLoanReportsService {
     LoansByDegreeResponseDTO findDegreeWithMostLoansBetweenDate(String startDate, String endDate) throws EntitySyntaxException, EntityNotFoundException;
     
     LoansByDegreeResponseDTO findDegreeWithMostLoans() throws EntityNotFoundException;
+    
+    List<BookLoan> findOverduePaymentByStudentBetweenDates(String studentId, String startDate, String endDate) throws EntitySyntaxException;
+    
+    List<BookLoan> findOverduePaymentByStudent(String studentId);
 }

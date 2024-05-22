@@ -79,4 +79,10 @@ public interface BookLoanRepository extends JpaRepository<BookLoan, Integer> {
             "WHERE s.degree = :degreeId", nativeQuery = true)
     List<BookLoan> findLoansByDegree(Integer degreeId);
     
+    @Query(value = "SELECT * FROM book_loan WHERE student = :studentId AND delay_total > 0 AND returned_date BETWEEN :startDate AND :endDate", nativeQuery = true)
+    List<BookLoan> findOverduePaymentsByStudentBetweenDates(String studentId, Date startDate, Date endDate);
+    
+    @Query(value = "SELECT * FROM book_loan WHERE student = :studentId AND delay_total > 0", nativeQuery = true)
+    List<BookLoan> findOverduePaymentsByStudent(String studentId);
+    
 }
