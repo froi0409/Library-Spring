@@ -5,8 +5,13 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.Type;
+import org.hibernate.dialect.PostgreSQLEnumJdbcType;
 
-@Entity(name = "user")
+import java.time.LocalDateTime;
+
+@Entity
+@Table(name = "user", schema = "public")
 @Getter
 @Setter
 @NoArgsConstructor
@@ -22,6 +27,10 @@ public class User {
     @Enumerated(EnumType.STRING)
     private Role role;
     
-    @Column
-    private String student;
+    @ManyToOne(targetEntity = Student.class, optional = true)
+    @JoinColumn(name = "student")
+    private Student student;
+    
+    @Column(name = "token_expiration")
+    private LocalDateTime tokenExpiration;
 }

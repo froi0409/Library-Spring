@@ -8,7 +8,8 @@ import lombok.Setter;
 
 import java.sql.Date;
 
-@Entity(name = "student")
+@Entity
+@Table(name = "student", schema = "public")
 @Getter
 @Setter
 @NoArgsConstructor
@@ -26,8 +27,11 @@ public class Student {
     @Column
     private Integer degree;
     
-    @Column(name = "birt_date")
-    private Date birtDate;
+    @Column(name = "birth_date")
+    private Date birthDate;
+    
+    @Column
+    private String email;
     
     @Column
     @Enumerated(EnumType.STRING)
